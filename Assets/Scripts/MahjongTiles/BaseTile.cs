@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class BaseTile : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    protected bool _isDora = false;
+    protected bool _isBackDora = false;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    protected int _doraIdx = -1;
+    protected int _backDoraIdx = -1;
 }
