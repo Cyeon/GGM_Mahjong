@@ -4,13 +4,6 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    [SerializeField]
-    protected TileType _tillType;
-    [SerializeField]
-    protected int _tileNumber;
-    [SerializeField]
-    protected bool _isAka = false;
-
     protected bool _isDora = false;
     protected bool _isBackDora = false;
 
