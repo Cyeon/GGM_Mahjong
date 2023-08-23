@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
+    public TileSO _tileSO = null;
+
     protected bool _isDora = false;
     protected bool _isBackDora = false;
 
