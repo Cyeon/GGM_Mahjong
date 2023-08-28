@@ -12,7 +12,9 @@ public class GameManager : MonoSingleton<GameManager>
     private static System.Random rng = new System.Random();
 
     private List<Tile> _tiles = new List<Tile>(); // 패산 타일들  
+    private Queue<Tile> _tileQueue = new Queue<Tile>();
     private List<Tile> _doraTiles = new List<Tile>(); // 도라 표시패 타일들
+    private List<Tile> _backDoraTiles = new List<Tile>();
 
     /// <summary>
     /// 기본 타일 전체 생성 
@@ -20,6 +22,7 @@ public class GameManager : MonoSingleton<GameManager>
     private void TileInit()
     {
         _tiles.Clear();
+        _tileQueue.Clear();
         for (int i = 0; i < _tileList.TileList.Count; i++)
         {
             for (int j = 0; j < 4; j++)
@@ -42,6 +45,15 @@ public class GameManager : MonoSingleton<GameManager>
                     break;
             }
         }
+
+        Shuffle();
+
+        foreach (Tile tile in _tiles)
+        {
+            _tileQueue.Enqueue(tile);
+        }
+
+        SetDora();
     }
 
     private void Shuffle()
@@ -62,8 +74,15 @@ public class GameManager : MonoSingleton<GameManager>
     /// </summary>
     private void SetDora()
     {
+        for (int i = 0; i < 5; i++)
+        {
+            Tile tile = _tileQueue.Dequeue();
+            tile.SetDora(true);
+            _doraTiles.Add(tile);
 
+            tile = _tileQueue.Dequeue();
+            tile.SetBackDora(true);
+            _backDoraTiles.Add(tile);
+        }
     }
-    
-
 }
