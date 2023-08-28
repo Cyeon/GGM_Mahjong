@@ -15,3 +15,4 @@ MonoBehaviour:
   _tileType: 2
   _tileNumber: 4
   _isAka: 0
+  _tileSprite: {fileID: 21300000, guid: 728237993bc525741b7d413b4df0f4db, type: 3}

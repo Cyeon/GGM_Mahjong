@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f758efa5c6e0a6409ea2204a9e76254, type: 3}
   m_Name: AkaMan5SO
   m_EditorClassIdentifier: 
-  _tillType: 0
+  _tileType: 0
   _tileNumber: 5
   _isAka: 1
+  _tileSprite: {fileID: 21300000, guid: 1ca17afb985eef645b60dd6e8df0ccd0, type: 3}

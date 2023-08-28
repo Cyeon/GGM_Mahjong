@@ -8,11 +8,5 @@ public class TileSO : ScriptableObject
     public TileType _tileType;
     public int _tileNumber;
     public bool _isAka = false;
-
-    public void SetData(TileType tileType, int tileNumber, bool aka = false)
-    {
-        _tileType = tileType;
-        _tileNumber = tileNumber;
-        _isAka = aka;
-    }
+    public Sprite _tileSprite;
 }
