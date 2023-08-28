@@ -6,25 +6,46 @@ public class TenpaiChecker : MonoBehaviour
 {
     [SerializeField]
     private List<TileSO> _handTiles = new List<TileSO>();
+    [SerializeField]
+    private TileListSO _13TileListSO = null;
 
     private List<TileSO> _tenpaiNeed = new List<TileSO>();
 
 
-    private List<TileSO> _wordTiles = new List<TileSO>();
+    private List<TileSO> _13Tiles = new List<TileSO>();
 
     private void Awake()
     {
-        _wordTiles = Resources.Load<TileListSO>("Resource/WordTilesListSO").TileList;
+        _13Tiles = _13TileListSO.TileList;
+
     }
 
     void Start()
     {
         if (Check_SevenPairs())
         {
-            Debug.Log("Tenpai");
+            Debug.Log("Seven Pair Tenpai");
+            PrintNeedTile();
         }
+        else
+            Debug.Log("No Seven Pair Tenpai");
+
+        if (Check_ThirteenOrphans())
+        {
+            Debug.Log("13 word Tenpai");
+            PrintNeedTile();
+        }
+        else
+            Debug.Log("No 13 word Tenpai");
     }
 
+    private void PrintNeedTile()
+    {
+        for (int i = 0; i < _tenpaiNeed.Count; i++)
+        {
+            Debug.Log("Need Tile " + _tenpaiNeed[i]._tileType + " " + _tenpaiNeed[i]._tileNumber);
+        }
+    }
 
     /// <summary>
     /// 치또이 체크
@@ -38,7 +59,10 @@ public class TenpaiChecker : MonoBehaviour
 
         for (int i = 0; i < _handTiles.Count; i++)
         {
-            dict[_handTiles[i]]++;
+            if (dict.ContainsKey(_handTiles[i]))
+                dict[_handTiles[i]]++;
+            else
+                dict.Add(_handTiles[i], 1);
         }
 
         foreach (TileSO item in dict.Keys)
@@ -72,10 +96,15 @@ public class TenpaiChecker : MonoBehaviour
 
         for (int i = 0; i < _handTiles.Count; i++)
         {
-            if (_handTiles[i]._tileType != TileType.Word)
+            if (_13Tiles.Contains(_handTiles[i]))
+            {
+                if (dict.ContainsKey(_handTiles[i]))
+                    dict[_handTiles[i]]++;
+                else
+                    dict.Add(_handTiles[i], 1);
+            }
+            else
                 return false;
-
-            dict[_handTiles[i]]++;
         }
 
         foreach (TileSO item in dict.Keys)
@@ -96,23 +125,24 @@ public class TenpaiChecker : MonoBehaviour
 
         if (headInHand)
         {
-            for (int i = 0; i < _wordTiles.Count; i++)
+            for (int i = 0; i < _13Tiles.Count; i++)
             {
-                if (!dict.ContainsKey(_wordTiles[i]))
+                if (!dict.ContainsKey(_13Tiles[i]))
                 {
-                    _tenpaiNeed.Add(_wordTiles[i]);
+                    _tenpaiNeed.Add(_13Tiles[i]);
                     break;
                 }
             }
         }
         else
         {
-            for (int i = 0; i < _wordTiles.Count; i++)
+            for (int i = 0; i < _13Tiles.Count; i++)
             {
-                _tenpaiNeed.Add(_wordTiles[i]);
+                _tenpaiNeed.Add(_13Tiles[i]);
             }
         }
 
         return true;
     }
+
 }

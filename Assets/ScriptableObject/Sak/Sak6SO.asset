@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f758efa5c6e0a6409ea2204a9e76254, type: 3}
   m_Name: Sak6SO
   m_EditorClassIdentifier: 
-  _tillType: 1
+  _tileType: 1
   _tileNumber: 6
   _isAka: 0
