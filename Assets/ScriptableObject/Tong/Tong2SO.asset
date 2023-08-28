@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f758efa5c6e0a6409ea2204a9e76254, type: 3}
   m_Name: Tong2SO
   m_EditorClassIdentifier: 
-  _tillType: 2
+  _tileType: 2
   _tileNumber: 2
   _isAka: 0
