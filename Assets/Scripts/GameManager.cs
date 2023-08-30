@@ -16,6 +16,11 @@ public class GameManager : MonoSingleton<GameManager>
     private List<Tile> _doraTiles = new List<Tile>(); // 도라 표시패 타일들
     private List<Tile> _backDoraTiles = new List<Tile>();
 
+    private void Awake()
+    {
+        TileInit();
+    }
+
     /// <summary>
     /// 기본 타일 전체 생성 
     /// </summary>

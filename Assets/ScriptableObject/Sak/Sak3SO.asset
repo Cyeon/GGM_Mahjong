@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f758efa5c6e0a6409ea2204a9e76254, type: 3}
   m_Name: Sak3SO
   m_EditorClassIdentifier: 
-  _tileType: 1
-  _tileNumber: 3
-  _isAka: 0
-  _tileSprite: {fileID: 21300000, guid: cb419faa7eee37b478f704db0832dfcb, type: 3}
+  TileType: 1
+  TileNumber: 3
+  IsAka: 0
+  TileSprite: {fileID: 21300000, guid: cb419faa7eee37b478f704db0832dfcb, type: 3}

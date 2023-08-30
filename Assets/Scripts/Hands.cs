@@ -13,6 +13,11 @@ public class Hands : MonoBehaviour
     [SerializeField]
     private GameObject _getTile = null;
 
+    private void Start()
+    {
+        GameStart();
+    }
+
     private void GameStart()
     {
         for (int i = 0; i < _handTileObjects.Count; i++)

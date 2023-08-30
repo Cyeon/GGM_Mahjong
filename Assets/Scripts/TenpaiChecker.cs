@@ -43,7 +43,7 @@ public class TenpaiChecker : MonoBehaviour
     {
         for (int i = 0; i < _tenpaiNeed.Count; i++)
         {
-            Debug.Log("Need Tile " + _tenpaiNeed[i]._tileType + " " + _tenpaiNeed[i]._tileNumber);
+            Debug.Log("Need Tile " + _tenpaiNeed[i].TileType + " " + _tenpaiNeed[i].TileNumber);
         }
     }
 

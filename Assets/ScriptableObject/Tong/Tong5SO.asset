@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f758efa5c6e0a6409ea2204a9e76254, type: 3}
   m_Name: Tong5SO
   m_EditorClassIdentifier: 
-  _tileType: 2
-  _tileNumber: 5
-  _isAka: 0
-  _tileSprite: {fileID: 21300000, guid: e5ec51f8cfbe27345861f793ef40e9eb, type: 3}
+  TileType: 2
+  TileNumber: 5
+  IsAka: 0
+  TileSprite: {fileID: 21300000, guid: e5ec51f8cfbe27345861f793ef40e9eb, type: 3}

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f758efa5c6e0a6409ea2204a9e76254, type: 3}
   m_Name: SouthSO
   m_EditorClassIdentifier: 
-  _tileType: 3
-  _tileNumber: 2
-  _isAka: 0
-  _tileSprite: {fileID: 21300000, guid: 1ac3d017779cbb240aeb2f81104336bd, type: 3}
+  TileType: 3
+  TileNumber: 1
+  IsAka: 0
+  TileSprite: {fileID: 21300000, guid: 1ac3d017779cbb240aeb2f81104336bd, type: 3}

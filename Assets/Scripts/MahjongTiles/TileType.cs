@@ -1,6 +1,6 @@
 public enum TileType
 {
-    Man,
+    Man = 0,
     Sak,
     Tong,
     Word,
