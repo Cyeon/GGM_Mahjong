@@ -5,8 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "SO/TileSO")]
 public class TileSO : ScriptableObject
 {
-    public TileType _tileType;
-    public int _tileNumber;
-    public bool _isAka = false;
-    public Sprite _tileSprite;
+    public TileType TileType;
+    public int TileNumber;
+    public bool IsAka = false;
+    public Sprite TileSprite;
 }

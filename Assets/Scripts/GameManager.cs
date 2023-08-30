@@ -28,7 +28,7 @@ public class GameManager : MonoSingleton<GameManager>
             for (int j = 0; j < 4; j++)
             {
                 Tile tile = new Tile();
-                tile._tileSO = _tileList.TileList[i];
+                tile.TileSO = _tileList.TileList[i];
                 _tiles.Add(tile);
             }
         }
@@ -38,10 +38,10 @@ public class GameManager : MonoSingleton<GameManager>
             for (int j = 0; j < 3; j++)
             {
                 Tile tile = new Tile();
-                tile._tileSO = _tileList.AkaTileList[i];
+                tile.TileSO = _tileList.AkaTileList[i];
                 _tiles.Add(tile);
 
-                if (_tileList.AkaTileList[i]._isAka)
+                if (_tileList.AkaTileList[i].IsAka)
                     break;
             }
         }
@@ -77,12 +77,15 @@ public class GameManager : MonoSingleton<GameManager>
         for (int i = 0; i < 5; i++)
         {
             Tile tile = _tileQueue.Dequeue();
-            tile.SetDora(true);
             _doraTiles.Add(tile);
 
             tile = _tileQueue.Dequeue();
-            tile.SetBackDora(true);
             _backDoraTiles.Add(tile);
         }
+    }
+
+    public Tile PickUp()
+    {
+        return _tileQueue.Dequeue();
     }
 }

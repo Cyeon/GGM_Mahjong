@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    public TileSO _tileSO = null;
+    public TileSO TileSO = null;
 
     protected bool _isDora = false;
     public bool IsDora => _isDora;
