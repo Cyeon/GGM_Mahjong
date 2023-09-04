@@ -8,7 +8,7 @@ public class Hands : MonoBehaviour
 
     [SerializeField]
     private List<GameObject> _handTileObjects = new List<GameObject>();
-    private List<Tile> _handTiles = new List<Tile>();
+    private List<TileSO> _handTiles = new List<TileSO>();
 
     [SerializeField]
     private GameObject _getTile = null;
@@ -25,25 +25,27 @@ public class Hands : MonoBehaviour
             _handTiles.Add(GameManager.Instance.PickUp());
         }
 
-        TileSort();
+        TileSort1();
+        TileSort2();
 
         for (int i = 0; i < _handTileObjects.Count; i++)
         {
-            _handTileObjects[i].transform.GetChild(1).GetComponent<Image>().sprite = _handTiles[i].TileSO.TileSprite;
+            _handTileObjects[i].GetComponent<Tile>().TileSO = _handTiles[i];
+            _handTileObjects[i].transform.GetChild(1).GetComponent<Image>().sprite = _handTiles[i].TileSprite;
         }
     }
 
-    private void TileSort()
+    private void TileSort1()
     {
-        List<Tile> list = _handTiles;
+        List<TileSO> list = _handTiles;
         int gap = list.Count / 2;
         while (gap > 0)
         {
             for (int i = gap; i < list.Count; i++)
             {
-                Tile temp = list[i];
+                TileSO temp = list[i];
                 int j = i;
-                while (j >= gap && ShouldSwap(list[j - gap], temp))
+                while (j >= gap && ShouldSwap1(list[j - gap], temp))
                 {
                     list[j] = list[j - gap];
                     j -= gap;
@@ -56,21 +58,46 @@ public class Hands : MonoBehaviour
         _handTiles = list;
     }
 
-    private bool ShouldSwap(Tile a, Tile b)
+    private bool ShouldSwap1(TileSO a, TileSO b)
     {
         if (a != null && b != null)
         {
-            if (a.TileSO.TileType == b.TileSO.TileType)
+            return a.TileType > b.TileType;
+        }
+
+        return false;
+    }
+
+    private void TileSort2()
+    {
+        List<TileSO> list = _handTiles;
+        int gap = list.Count / 2;
+        while (gap > 0)
+        {
+            for (int i = gap; i < list.Count; i++)
             {
-                return a.TileSO.TileNumber < b.TileSO.TileNumber;
+                TileSO temp = list[i];
+                int j = i;
+                while (j >= gap && ShouldSwap2(list[j - gap], temp))
+                {
+                    list[j] = list[j - gap];
+                    j -= gap;
+                }
+                list[j] = temp;
             }
-            else if (a.TileSO.TileType < b.TileSO.TileType)
+            gap /= 2;
+        }
+
+        _handTiles = list;
+    }
+
+    private bool ShouldSwap2(TileSO a, TileSO b)
+    {
+        if (a != null && b != null)
+        {
+            if (a.TileType == b.TileType)
             {
-                return true;
-            }
-            else
-            {
-                return false;
+                return a.TileNumber > b.TileNumber;
             }
         }
 

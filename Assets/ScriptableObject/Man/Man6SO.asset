@@ -15,4 +15,4 @@ MonoBehaviour:
   TileType: 0
   TileNumber: 6
   IsAka: 0
-  TileSprite: {fileID: 0}
+  TileSprite: {fileID: 21300000, guid: 917e96239c2db7b498e99bca0c1b381f, type: 3}

@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tileList: {fileID: 11400000, guid: 9f7f87e57390512428ec9d5a3f3e2f62, type: 2}
+  _tiles: []
 --- !u!4 &134140199
 Transform:
   m_ObjectHideFlags: 0
