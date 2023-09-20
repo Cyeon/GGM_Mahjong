@@ -15,4 +15,33 @@ public class TileSO : ScriptableObject
         _tileNumber = tileNumber;
         _isAka = aka;
     }
+
+    /// <summary>
+    /// 바로 옆 타일인지 체크
+    /// </summary>
+    /// <param name="tile"></param>
+    /// <returns></returns>
+    public bool IsNeighbour(TileSO tile) 
+    {
+        if (this._tileType == tile._tileType && (int)Mathf.Abs(this._tileNumber - tile._tileNumber) == 1)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// 한 칸 띄운 타일인지 체크
+    /// </summary>
+    /// <param name="tile"></param>
+    /// <returns></returns>
+    public bool IsSecondNeighbour(TileSO tile)
+    {
+        if (this._tileType == tile._tileType && (int)Mathf.Abs(this._tileNumber - tile._tileNumber) == 2)
+        {
+            return true;
+        }
+        return false;
+    }
+
 }

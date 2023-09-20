@@ -336,8 +336,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1d7eeaad367c454193d1c02d7e79dd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _handTiles: []
-  _13TileListSO: {fileID: 0}
+  _handTiles:
+  - {fileID: 11400000, guid: 7e5274dd20014844faa454fad5549d38, type: 2}
+  - {fileID: 11400000, guid: 7e5274dd20014844faa454fad5549d38, type: 2}
+  - {fileID: 11400000, guid: 258e6b4547ae9af4fbc49954bb0f25e8, type: 2}
+  - {fileID: 11400000, guid: 1c3739a6db449a6489bb2286559041b0, type: 2}
+  - {fileID: 11400000, guid: 580bd3d59a1a19049a7df404a26f4a2a, type: 2}
+  - {fileID: 11400000, guid: 012c23f00503d004b828ebfa33401126, type: 2}
+  - {fileID: 11400000, guid: 2225f5a57513b0a4c891d403403da7fe, type: 2}
+  - {fileID: 11400000, guid: 2d29247db0ed2eb4085ae1c8fb4f335a, type: 2}
+  - {fileID: 11400000, guid: f2f734fd465a0e24194ade9e3a9dba53, type: 2}
+  - {fileID: 11400000, guid: b00b47535c9ca144ba5284bec3675840, type: 2}
+  - {fileID: 11400000, guid: 01ecc48d15fd70b42b2f1d6fcad7bdf4, type: 2}
+  - {fileID: 11400000, guid: a6ae46bebf50210468fc638c377a746d, type: 2}
+  - {fileID: 11400000, guid: 13cd920dadab81a419f8e5dc79d57bd5, type: 2}
+  _13TileListSO: {fileID: 11400000, guid: f6909942aa9db2c45a9c3e7850d0241d, type: 2}
 --- !u!4 &1178452115
 Transform:
   m_ObjectHideFlags: 0
