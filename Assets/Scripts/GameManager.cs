@@ -13,9 +13,12 @@ public class GameManager : MonoSingleton<GameManager>
 
     [SerializeField]
     private List<TileSO> _tiles = new List<TileSO>(); // 패산 타일들  
+    [SerializeField]
     private Queue<TileSO> _tileQueue = new Queue<TileSO>();
     private List<TileSO> _doraTiles = new List<TileSO>(); // 도라 표시패 타일들
     private List<TileSO> _backDoraTiles = new List<TileSO>();
+
+
 
     private void Awake()
     {
@@ -25,7 +28,7 @@ public class GameManager : MonoSingleton<GameManager>
     /// <summary>
     /// 기본 타일 전체 생성 
     /// </summary>
-    private void TileInit()
+    public void TileInit()
     {
         _tiles.Clear();
         _tileQueue.Clear();
@@ -59,6 +62,22 @@ public class GameManager : MonoSingleton<GameManager>
         }
 
         SetDora();
+    }
+
+    public void RemoveTile(TileSO tile, Tile tileObj)
+    {
+        if(tile == null)
+        {
+            Debug.LogError("보내진 타일이 null입니다.");
+        }
+        _tiles.Remove(tile);
+
+        TileSO newTile = _tileQueue.Dequeue();
+        Debug.Log(newTile.TileNumber);
+        _tiles.Add(newTile);
+        tileObj.TileSO = newTile;
+
+
     }
 
     private void Shuffle()

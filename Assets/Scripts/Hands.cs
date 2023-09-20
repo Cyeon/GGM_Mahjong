@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,18 +14,35 @@ public class Hands : MonoBehaviour
     [SerializeField]
     private GameObject _getTile = null;
 
+    [SerializeField]
+    public Button restartBtn;
+
     private void Start()
     {
+        GameStart();
+        restartBtn.onClick.AddListener(Restart);
+    }
+
+    private void Restart()
+    {
+        GameManager.Instance.TileInit();
+
         GameStart();
     }
 
     private void GameStart()
     {
+        _handTiles.Clear();
         for (int i = 0; i < _handTileObjects.Count; i++)
         {
             _handTiles.Add(GameManager.Instance.PickUp());
         }
 
+        TileSort();
+    }
+
+    public void TileSort()
+    {
         TileSort1();
         TileSort2();
 
@@ -102,5 +120,12 @@ public class Hands : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void RemoveTile(TileSO tile)
+    {
+        _handTiles.Remove(tile);
+        _handTiles.Add(GameManager.Instance.PickUp());
+        TileSort();
     }
 }
