@@ -1,29 +1,32 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "SO/TileSO")]
+[Serializable]
 public class TileSO : ScriptableObject
 {
-    public TileType _tileType;
-    public int _tileNumber;
-    public bool _isAka = false;
-
+    public TileType TileType;
+    public int TileNumber;
+    public bool IsAka = false;
+    public Sprite TileSprite;
+    
     public void SetData(TileType tileType, int tileNumber, bool aka = false)
     {
-        _tileType = tileType;
-        _tileNumber = tileNumber;
-        _isAka = aka;
+        TileType = tileType;
+        TileNumber = tileNumber;
+        IsAka = aka;
     }
 
     /// <summary>
-    /// ¹Ù·Î ¿· Å¸ÀÏÀÎÁö Ã¼Å©
+    /// ï¿½Ù·ï¿½ ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã¼Å©
     /// </summary>
     /// <param name="tile"></param>
     /// <returns></returns>
     public bool IsNeighbour(TileSO tile) 
     {
-        if (this._tileType == tile._tileType && (int)Mathf.Abs(this._tileNumber - tile._tileNumber) == 1)
+        if (this.TileType == tile.TileType && (int)Mathf.Abs(this.TileNumber - tile.TileNumber) == 1)
         {
             return true;
         }
@@ -31,13 +34,13 @@ public class TileSO : ScriptableObject
     }
 
     /// <summary>
-    /// ÇÑ Ä­ ¶ç¿î Å¸ÀÏÀÎÁö Ã¼Å©
+    /// ï¿½ï¿½ Ä­ ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã¼Å©
     /// </summary>
     /// <param name="tile"></param>
     /// <returns></returns>
     public bool IsSecondNeighbour(TileSO tile)
     {
-        if (this._tileType == tile._tileType && (int)Mathf.Abs(this._tileNumber - tile._tileNumber) == 2)
+        if (this.TileType == tile.TileType && (int)Mathf.Abs(this.TileNumber - tile.TileNumber) == 2)
         {
             return true;
         }

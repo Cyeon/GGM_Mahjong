@@ -11,15 +11,24 @@ public class GameManager : MonoSingleton<GameManager>
 
     private static System.Random rng = new System.Random();
 
-    private List<Tile> _tiles = new List<Tile>(); // 패산 타일들  
-    private Queue<Tile> _tileQueue = new Queue<Tile>();
-    private List<Tile> _doraTiles = new List<Tile>(); // 도라 표시패 타일들
-    private List<Tile> _backDoraTiles = new List<Tile>();
+    [SerializeField]
+    private List<TileSO> _tiles = new List<TileSO>(); // 패산 타일들  
+    [SerializeField]
+    private Queue<TileSO> _tileQueue = new Queue<TileSO>();
+    private List<TileSO> _doraTiles = new List<TileSO>(); // 도라 표시패 타일들
+    private List<TileSO> _backDoraTiles = new List<TileSO>();
+
+
+
+    private void Awake()
+    {
+        TileInit();
+    }
 
     /// <summary>
     /// 기본 타일 전체 생성 
     /// </summary>
-    private void TileInit()
+    public void TileInit()
     {
         _tiles.Clear();
         _tileQueue.Clear();
@@ -27,9 +36,8 @@ public class GameManager : MonoSingleton<GameManager>
         {
             for (int j = 0; j < 4; j++)
             {
-                Tile tile = new Tile();
-                tile._tileSO = _tileList.TileList[i];
-                _tiles.Add(tile);
+                TileSO tileSO =  _tileList.TileList[i];
+                _tiles.Add(tileSO);
             }
         }
 
@@ -37,23 +45,39 @@ public class GameManager : MonoSingleton<GameManager>
         {
             for (int j = 0; j < 3; j++)
             {
-                Tile tile = new Tile();
-                tile._tileSO = _tileList.AkaTileList[i];
-                _tiles.Add(tile);
+                TileSO tileSO = _tileList.AkaTileList[i];
+                _tiles.Add(tileSO);
 
-                if (_tileList.AkaTileList[i]._isAka)
+                if (_tileList.AkaTileList[i].IsAka)
                     break;
             }
         }
 
         Shuffle();
 
-        foreach (Tile tile in _tiles)
+        foreach (TileSO tile in _tiles)
         {
             _tileQueue.Enqueue(tile);
+            Debug.Log(tile.TileType + tile.TileNumber);
         }
 
         SetDora();
+    }
+
+    public void RemoveTile(TileSO tile, Tile tileObj)
+    {
+        if(tile == null)
+        {
+            Debug.LogError("보내진 타일이 null입니다.");
+        }
+        _tiles.Remove(tile);
+
+        TileSO newTile = _tileQueue.Dequeue();
+        Debug.Log(newTile.TileNumber);
+        _tiles.Add(newTile);
+        tileObj.TileSO = newTile;
+
+
     }
 
     private void Shuffle()
@@ -63,7 +87,7 @@ public class GameManager : MonoSingleton<GameManager>
         {
             n--;
             int k = rng.Next(n + 1);
-            Tile value = _tiles[k];
+            TileSO value = _tiles[k];
             _tiles[k] = _tiles[n];
             _tiles[n] = value;
         }
@@ -76,13 +100,16 @@ public class GameManager : MonoSingleton<GameManager>
     {
         for (int i = 0; i < 5; i++)
         {
-            Tile tile = _tileQueue.Dequeue();
-            tile.SetDora(true);
+            TileSO tile = _tileQueue.Dequeue();
             _doraTiles.Add(tile);
 
             tile = _tileQueue.Dequeue();
-            tile.SetBackDora(true);
             _backDoraTiles.Add(tile);
         }
+    }
+
+    public TileSO PickUp()
+    {
+        return _tileQueue.Dequeue();
     }
 }

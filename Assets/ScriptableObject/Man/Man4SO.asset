@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f758efa5c6e0a6409ea2204a9e76254, type: 3}
   m_Name: Man4SO
   m_EditorClassIdentifier: 
-  _tillType: 0
-  _tileNumber: 4
-  _isAka: 0
+  TileType: 0
+  TileNumber: 4
+  IsAka: 0
+  TileSprite: {fileID: 21300000, guid: 59184740a4c2e3440a6232a59bb09821, type: 3}

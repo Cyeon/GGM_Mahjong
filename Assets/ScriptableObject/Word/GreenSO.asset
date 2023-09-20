@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f758efa5c6e0a6409ea2204a9e76254, type: 3}
   m_Name: GreenSO
   m_EditorClassIdentifier: 
-  _tileType: 3
-  _tileNumber: 6
-  _isAka: 0
+  TileType: 3
+  TileNumber: 5
+  IsAka: 0
+  TileSprite: {fileID: 21300000, guid: 852e8133458dfc14b841251a5d5d98c3, type: 3}

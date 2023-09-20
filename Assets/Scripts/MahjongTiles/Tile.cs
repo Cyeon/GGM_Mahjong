@@ -1,19 +1,37 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
+[Serializable]
 public class Tile : MonoBehaviour
 {
-    public TileSO _tileSO = null;
+    public TileSO TileSO = null;
 
     protected bool _isDora = false;
     public bool IsDora => _isDora;
-    protected bool _isBackDora = false;
+    private bool _isBackDora = false;
     public bool IsBackDora => _isBackDora;
 
-    protected int _doraIdx = -1;
-    protected int _backDoraIdx = -1;
+    private int _doraIdx = -1;
+    private int _backDoraIdx = -1;
+
+    public Button btn;
+
+    public Hands hand;
+
+    public void Awake()
+    {
+        btn = GetComponentInChildren<Button>();
+        btn.onClick.AddListener(OnClickBtn);
+    }
+
+    public void OnClickBtn()
+    {
+        hand.RemoveTile(TileSO);
+    }
 
     public void SetDora(bool isDora)
     {
@@ -93,7 +111,7 @@ public class TileMeld
         list.Add(_tileTwo);
         list.Add(_tileThree);
 
-        list = list.OrderBy(x => x._tileNumber).ToList();
+        list = list.OrderBy(x => x.TileNumber).ToList();
 
         _tileOne = list[0];
         _tileTwo = list[1];

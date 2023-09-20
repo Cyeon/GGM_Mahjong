@@ -65,7 +65,7 @@ public class TenpaiChecker : MonoBehaviour
     {
         for (int i = 0; i < _tenpaiNeed.Count; i++)
         {
-            Debug.Log("Need Tile " + _tenpaiNeed[i]._tileType + " " + _tenpaiNeed[i]._tileNumber);
+            Debug.Log("Need Tile " + _tenpaiNeed[i].TileType + " " + _tenpaiNeed[i].TileNumber);
         }
     }
 
@@ -177,7 +177,7 @@ public class TenpaiChecker : MonoBehaviour
 
     private List<HandReading> RecursionCheck(List<TileSO> remainTiles, List<TileMeld> melds, bool isEarlyReturn)
     {
-        remainTiles = remainTiles.OrderBy(x => x._tileType).ThenBy(x => x._tileNumber).ToList();
+        remainTiles = remainTiles.OrderBy(x => x.TileType).ThenBy(x => x.TileNumber).ToList();
 
         List<HandReading> readings = new List<HandReading>();
         for (int i = 0; i < remainTiles.Count; i++)
@@ -215,7 +215,7 @@ public class TenpaiChecker : MonoBehaviour
                     return readings;
             }
 
-            if (tile._tileType != TileType.Word && tile._tileNumber <= 7)
+            if (tile.TileType != TileType.Word && tile.TileNumber <= 7)
             {
                 TileSO first = null;
                 TileSO second = null;
@@ -224,13 +224,13 @@ public class TenpaiChecker : MonoBehaviour
 
                 foreach (TileSO t in remainTiles)
                 {
-                    if (t == tile || t._tileType != tile._tileType)
+                    if (t == tile || t.TileType != tile.TileType)
                         continue;
-                    if (t._tileNumber - tile._tileNumber == 1 && first == null)
+                    if (t.TileNumber - tile.TileNumber == 1 && first == null)
                     {
                         first = t;
                     }
-                    else if (t._tileNumber - tile._tileNumber == 2 && second == null)
+                    else if (t.TileNumber - tile.TileNumber == 2 && second == null)
                     {
                         second = t;
                     }
@@ -330,10 +330,10 @@ public class TenpaiChecker : MonoBehaviour
 
                         if (tile.IsSecondNeighbour(t)) // °£Â¯´ë±â
                         {
-                            int middle = (tile._tileNumber + t._tileNumber) / 2;
+                            int middle = (tile.TileNumber + t.TileNumber) / 2;
 
                             TileSO SO = new TileSO();
-                            SO.SetData(tile._tileType, middle);
+                            SO.SetData(tile.TileType, middle);
                             tileMelds.Add(new TileMeld(tile, t, SO, isNeed: true));
                             _tenpaiNeed.Add(SO);
                             HandReading reading = new HandReading(tileMelds, pair);
@@ -345,7 +345,7 @@ public class TenpaiChecker : MonoBehaviour
                         {
                             TileSO one;
                             TileSO two;
-                            if (tile._tileNumber > t._tileNumber)
+                            if (tile.TileNumber > t.TileNumber)
                             {
                                 one = t;
                                 two = tile;
@@ -357,9 +357,9 @@ public class TenpaiChecker : MonoBehaviour
                             }
 
                             TileSO SO = new TileSO();
-                            if (one._tileNumber != 1 && one._tileNumber != 9)
+                            if (one.TileNumber != 1 && one.TileNumber != 9)
                             {
-                                SO.SetData(one._tileType, one._tileNumber - 1);
+                                SO.SetData(one.TileType, one.TileNumber - 1);
                                 tileMelds.Add(new TileMeld(one, two, SO, isNeed: true));
                                 _tenpaiNeed.Add(SO);
 
@@ -367,14 +367,14 @@ public class TenpaiChecker : MonoBehaviour
                                 AppendReading(ref readings, reading);
                             }
 
-                            if (two._tileNumber != 1 && two._tileNumber != 9)
+                            if (two.TileNumber != 1 && two.TileNumber != 9)
                             {
                                 tileMelds.Clear();
                                 for (int l = 0; l < melds.Count; l++)
                                 {
                                     tileMelds.Add(melds[i]);
                                 }
-                                SO.SetData(one._tileType, two._tileNumber + 1);
+                                SO.SetData(one.TileType, two.TileNumber + 1);
 
                                 tileMelds.Add(new TileMeld(one, two, SO, isNeed: true));
                                 _tenpaiNeed.Add(SO);
@@ -415,7 +415,7 @@ public class TenpaiChecker : MonoBehaviour
 
     private bool IsSameTile(TileSO tileOne, TileSO tileTwo)
     {
-        if (tileOne._tileType == tileTwo._tileType && tileOne._tileNumber == tileTwo._tileNumber)
+        if (tileOne.TileType == tileTwo.TileType && tileOne.TileNumber == tileTwo.TileNumber)
             return true;
         return false;
     }
