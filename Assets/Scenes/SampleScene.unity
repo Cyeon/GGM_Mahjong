@@ -615,6 +615,34 @@ PrefabInstance:
       propertyPath: restartBtn
       value: 
       objectReference: {fileID: 1886861489}
+    - target: {fileID: 2536942785608838397, guid: 44105896a0bac3f46af9c241a0ad6c48, type: 3}
+      propertyPath: uEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536942785608838397, guid: 44105896a0bac3f46af9c241a0ad6c48, type: 3}
+      propertyPath: uEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536942785608838397, guid: 44105896a0bac3f46af9c241a0ad6c48, type: 3}
+      propertyPath: uEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1180471292}
+    - target: {fileID: 2536942785608838397, guid: 44105896a0bac3f46af9c241a0ad6c48, type: 3}
+      propertyPath: uEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536942785608838397, guid: 44105896a0bac3f46af9c241a0ad6c48, type: 3}
+      propertyPath: uEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Check_AllTenpai
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536942785608838397, guid: 44105896a0bac3f46af9c241a0ad6c48, type: 3}
+      propertyPath: uEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TenpaiChecker, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536942785608838397, guid: 44105896a0bac3f46af9c241a0ad6c48, type: 3}
+      propertyPath: uEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2949951226676168748, guid: 44105896a0bac3f46af9c241a0ad6c48, type: 3}
       propertyPath: m_IsActive
       value: 0
