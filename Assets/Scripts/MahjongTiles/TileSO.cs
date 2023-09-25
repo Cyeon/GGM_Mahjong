@@ -47,4 +47,10 @@ public class TileSO : ScriptableObject
         return false;
     }
 
+    public bool IsTerminalTile()
+    {
+        if (this.TileNumber != 1 || this.TileNumber != 9)
+            return false;
+        return true;
+    }
 }
