@@ -19,7 +19,7 @@ public class Hands : MonoBehaviour
     public Button restartBtn;
 
     public UnityEvent<List<TileSO>> uEvent = null;
-
+    public GameObject tenpai;
     private void Start()
     {
         GameStart();
@@ -29,7 +29,7 @@ public class Hands : MonoBehaviour
     private void Restart()
     {
         GameManager.Instance.TileInit();
-
+        tenpai.SetActive(false);
         GameStart();
     }
 
