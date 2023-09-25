@@ -27,6 +27,8 @@ public class TenpaiChecker : MonoBehaviour
 
     private List<TileSO> _13Tiles = new List<TileSO>();
 
+    public GameObject tenpai;
+
     private void Awake()
     {
         _13Tiles = _13TileListSO.TileList;
@@ -71,9 +73,14 @@ public class TenpaiChecker : MonoBehaviour
         {
             Debug.Log("TENPAI");
             PrintNeedTile();
+            tenpai.SetActive(true);
         }
         else
+        {
             Debug.Log("NO TENPAI");
+            tenpai.SetActive(false);
+        }
+
     }
 
     private void PrintNeedTile()
