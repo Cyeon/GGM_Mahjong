@@ -22,7 +22,7 @@ public class TenpaiChecker : MonoBehaviour
     [SerializeField]
     private TileListSO _13TileListSO = null;
 
-    private List<TileSO> _tenpaiNeed = new List<TileSO>();
+    private static List<TileSO> _tenpaiNeed = new List<TileSO>();
 
 
     private List<TileSO> _13Tiles = new List<TileSO>();
@@ -187,11 +187,35 @@ public class TenpaiChecker : MonoBehaviour
         return RecursionCheck(list, new List<TileMeld>(), true).Count > 0;
     }
 
-    private List<HandReading> RecursionCheck(List<TileSO> remainTiles, List<TileMeld> melds, bool isEarlyReturn)
+    private static List<HandReading> RecursionCheck(List<TileSO> remainTiles, List<TileMeld> melds, bool isEarlyReturn)
     {
+        List<HandReading> readings = new List<HandReading>();
         remainTiles = remainTiles.OrderBy(x => x.TileType).ThenBy(x => x.TileNumber).ToList();
 
-        List<HandReading> readings = new List<HandReading>();
+        if (remainTiles.Count == 1)
+        {
+            TilePair pair = new TilePair(remainTiles[0], remainTiles[0], true);
+            HandReading reading = new HandReading(melds, pair);
+
+            AppendReading(ref readings, reading);
+
+            return readings;
+        }
+        else if (remainTiles.Count == 2)
+        {
+            if (IsSameTile(remainTiles[0], remainTiles[1]))
+            {
+                TilePair pair = new TilePair(remainTiles[0], remainTiles[1]);
+
+                HandReading reading = new HandReading(melds, pair);
+                AppendReading(ref readings, reading);
+
+                return readings;
+            }
+        }
+
+
+        
         for (int i = 0; i < remainTiles.Count; i++)
         {
             if (i != 0 && remainTiles[i] == remainTiles[i - 1])
@@ -217,11 +241,11 @@ public class TenpaiChecker : MonoBehaviour
 
                 for (int l = 0; l < melds.Count; l++)
                 {
-                    tileMelds.Add(melds[i]);
+                    tileMelds.Add(melds[l]);
                 }
                 tileMelds.Add(tileMeld);
 
-                AppendReadingList(ref readings, RecursionCheck(copy, melds, isEarlyReturn));
+                AppendReadingList(ref readings, RecursionCheck(copy, tileMelds, isEarlyReturn));
 
                 if (isEarlyReturn && readings.Count > 0)
                     return readings;
@@ -260,7 +284,7 @@ public class TenpaiChecker : MonoBehaviour
 
                     for (int l = 0; l < melds.Count; l++)
                     {
-                        tileMelds.Add(melds[i]);
+                        tileMelds.Add(melds[l]);
                     }
                     tileMelds.Add(tileMeld);
 
@@ -307,7 +331,7 @@ public class TenpaiChecker : MonoBehaviour
 
                         for (int l = 0; l < melds.Count; l++)
                         {
-                            tileMelds.Add(melds[i]);
+                            tileMelds.Add(melds[l]);
                         }
                         tileMelds.Add(new TileMeld(n1, n2, n1, isNeed: true));
                         _tenpaiNeed.Add(n1);
@@ -321,7 +345,7 @@ public class TenpaiChecker : MonoBehaviour
 
                         for (int l = 0; l < melds.Count; l++)
                         {
-                            tileMelds.Add(melds[i]);
+                            tileMelds.Add(melds[l]);
                         }
                         tileMelds.Add(new TileMeld(tile, t, tile, isNeed: true));
                         _tenpaiNeed.Add(tile);
@@ -404,7 +428,7 @@ public class TenpaiChecker : MonoBehaviour
         return readings;
     }
 
-    private void AppendReadingList(ref List<HandReading> readings, List<HandReading> appendList)
+    private static void AppendReadingList(ref List<HandReading> readings, List<HandReading> appendList)
     {
         foreach (HandReading item in appendList)
         {
@@ -412,7 +436,7 @@ public class TenpaiChecker : MonoBehaviour
         }
     }
 
-    private void AppendReading(ref List<HandReading> readings, HandReading read)
+    private static void AppendReading(ref List<HandReading> readings, HandReading read)
     {
         foreach (HandReading item in readings)
         {
@@ -425,7 +449,7 @@ public class TenpaiChecker : MonoBehaviour
         readings.Add(read);
     }
 
-    private bool IsSameTile(TileSO tileOne, TileSO tileTwo)
+    private static bool IsSameTile(TileSO tileOne, TileSO tileTwo)
     {
         if (tileOne.TileType == tileTwo.TileType && tileOne.TileNumber == tileTwo.TileNumber)
             return true;
