@@ -27,8 +27,6 @@ public class TenpaiChecker : MonoBehaviour
 
     private List<TileSO> _13Tiles = new List<TileSO>();
 
-    private List<HandReading> _handReadings = new List<HandReading>();
-
     private void Awake()
     {
         _13Tiles = _13TileListSO.TileList;
@@ -36,23 +34,40 @@ public class TenpaiChecker : MonoBehaviour
 
     void Start()
     {
-        if (Check_SevenPairs())
+        if (_handTiles.Count == 13)
+        {
+            Check_AllTenpai(_handTiles);
+        }
+    }
+
+    public void Check_AllTenpai(List<TileSO> list)
+    {
+        if (list.Count < 13)
+        {
+            Debug.Log("HandTile < 13");
+            return;
+        }
+        _tenpaiNeed.Clear();
+
+        if (Check_SevenPairs(list))
         {
             Debug.Log("Seven Pair Tenpai");
             PrintNeedTile();
         }
         else
             Debug.Log("No Seven Pair Tenpai");
+        _tenpaiNeed.Clear();
 
-        if (Check_ThirteenOrphans())
+        if (Check_ThirteenOrphans(list))
         {
             Debug.Log("13 word Tenpai");
             PrintNeedTile();
         }
         else
             Debug.Log("No 13 word Tenpai");
+        _tenpaiNeed.Clear();
 
-        if (Check_Tenpai())
+        if (Check_Tenpai(list))
         {
             Debug.Log("TENPAI");
             PrintNeedTile();
@@ -65,6 +80,7 @@ public class TenpaiChecker : MonoBehaviour
     {
         for (int i = 0; i < _tenpaiNeed.Count; i++)
         {
+            if (_tenpaiNeed[i] == null) continue;
             Debug.Log("Need Tile " + _tenpaiNeed[i].TileType + " " + _tenpaiNeed[i].TileNumber);
         }
     }
@@ -73,18 +89,18 @@ public class TenpaiChecker : MonoBehaviour
     /// 치또이 체크
     /// </summary>
     /// <returns>텐파이인지 아닌지</returns>
-    private bool Check_SevenPairs()
+    private bool Check_SevenPairs(List<TileSO> list)
     {
         Dictionary<TileSO, int> dict = new Dictionary<TileSO, int>();
 
         TileSO tenpaiTile = null;
 
-        for (int i = 0; i < _handTiles.Count; i++)
+        for (int i = 0; i < list.Count; i++)
         {
-            if (dict.ContainsKey(_handTiles[i]))
-                dict[_handTiles[i]]++;
+            if (dict.ContainsKey(list[i]))
+                dict[list[i]]++;
             else
-                dict.Add(_handTiles[i], 1);
+                dict.Add(list[i], 1);
         }
 
         foreach (TileSO item in dict.Keys)
@@ -101,7 +117,6 @@ public class TenpaiChecker : MonoBehaviour
             }
         }
 
-        _tenpaiNeed.Clear();
         _tenpaiNeed.Add(tenpaiTile);
         return true;
     }
@@ -110,20 +125,20 @@ public class TenpaiChecker : MonoBehaviour
     /// 국사무쌍 체크
     /// </summary>
     /// <returns>텐파이인지 아닌지</returns>
-    private bool Check_ThirteenOrphans()
+    private bool Check_ThirteenOrphans(List<TileSO> list)
     {
         Dictionary<TileSO, int> dict = new Dictionary<TileSO, int>();
 
         bool headInHand = false;
 
-        for (int i = 0; i < _handTiles.Count; i++)
+        for (int i = 0; i < list.Count; i++)
         {
-            if (_13Tiles.Contains(_handTiles[i]))
+            if (_13Tiles.Contains(list[i]))
             {
-                if (dict.ContainsKey(_handTiles[i]))
-                    dict[_handTiles[i]]++;
+                if (dict.ContainsKey(list[i]))
+                    dict[list[i]]++;
                 else
-                    dict.Add(_handTiles[i], 1);
+                    dict.Add(list[i], 1);
             }
             else
                 return false;
@@ -142,8 +157,6 @@ public class TenpaiChecker : MonoBehaviour
                 headInHand = true;
             }
         }
-
-        _tenpaiNeed.Clear();
 
         if (headInHand)
         {
@@ -168,11 +181,10 @@ public class TenpaiChecker : MonoBehaviour
     }
 
 
-    private bool Check_Tenpai()
+    private bool Check_Tenpai(List<TileSO> list)
     {
-        _tenpaiNeed.Clear();
-
-        return RecursionCheck(_handTiles, new List<TileMeld>(), true).Count > 0;
+        List<HandReading> _list = RecursionCheck(list, new List<TileMeld>(), true);
+        return RecursionCheck(list, new List<TileMeld>(), true).Count > 0;
     }
 
     private List<HandReading> RecursionCheck(List<TileSO> remainTiles, List<TileMeld> melds, bool isEarlyReturn)

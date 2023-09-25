@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class Hands : MonoBehaviour
@@ -16,6 +17,8 @@ public class Hands : MonoBehaviour
 
     [SerializeField]
     public Button restartBtn;
+
+    public UnityEvent<List<TileSO>> uEvent = null;
 
     private void Start()
     {
@@ -126,6 +129,7 @@ public class Hands : MonoBehaviour
     {
         _handTiles.Remove(tile);
         _handTiles.Add(GameManager.Instance.PickUp());
+        uEvent?.Invoke(_handTiles);
         TileSort();
     }
 }
