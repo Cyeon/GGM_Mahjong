@@ -31,6 +31,7 @@ public class Hands : MonoBehaviour
     private void Restart()
     {
         GameManager.Instance.TileInit();
+        GameManager.Instance.ResetTurn();
         tenpai.SetActive(false);
         GameStart();
     }
@@ -44,6 +45,7 @@ public class Hands : MonoBehaviour
         }
 
         TileSort();
+        GameManager.Instance.ResetTurn();
     }
 
     public void TileSort()

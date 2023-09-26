@@ -18,7 +18,8 @@ public class GameManager : MonoSingleton<GameManager>
     private List<TileSO> _doraTiles = new List<TileSO>(); // 도라 표시패 타일들
     private List<TileSO> _backDoraTiles = new List<TileSO>();
 
-
+    private int _turnCount = 1;
+    public int TurnCount => _turnCount;
 
     private void Awake()
     {
@@ -110,6 +111,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     public TileSO PickUp()
     {
+        _turnCount++;
         return _tileQueue.Dequeue();
     }
 
@@ -147,5 +149,10 @@ public class GameManager : MonoSingleton<GameManager>
         if (tile.TileType == tileTwoType && tile.TileNumber == tileTwoNumber && !tile.IsAka)
             return true;
         return false;
+    }
+
+    public void ResetTurn()
+    {
+        _turnCount = 1;
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class TenpaiPanel : MonoBehaviour
@@ -8,7 +9,8 @@ public class TenpaiPanel : MonoBehaviour
     private GameObject _tilePrefab = null;
     [SerializeField]
     private Transform _hand = null;
-
+    [SerializeField]
+    private TMP_Text _turnText = null;
 
     private List<Tile> _tileList = new List<Tile>();
     private TenpaiChecker _checker = null;
@@ -25,6 +27,7 @@ public class TenpaiPanel : MonoBehaviour
         {
             TileSet();
         }
+        _turnText.SetText(GameManager.Instance.TurnCount.ToString());
     }
     private void OnDisable()
     {
