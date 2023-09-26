@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -104,9 +104,9 @@ public class TenpaiChecker : MonoBehaviour
     }
 
     /// <summary>
-    /// Ä¡¶ÇÀÌ Ã¼Å©
+    /// ì¹˜ë˜ì´ ì²´í¬
     /// </summary>
-    /// <returns>ÅÙÆÄÀÌÀÎÁö ¾Æ´ÑÁö</returns>
+    /// <returns>í…íŒŒì´ì¸ì§€ ì•„ë‹Œì§€</returns>
     private bool Check_SevenPairs(List<TileSO> list)
     {
         Dictionary<TileSO, int> dict = new Dictionary<TileSO, int>();
@@ -158,9 +158,9 @@ public class TenpaiChecker : MonoBehaviour
     }
 
     /// <summary>
-    /// ±¹»ç¹«½Ö Ã¼Å©
+    /// êµ­ì‚¬ë¬´ìŒ ì²´í¬
     /// </summary>
-    /// <returns>ÅÙÆÄÀÌÀÎÁö ¾Æ´ÑÁö</returns>
+    /// <returns>í…íŒŒì´ì¸ì§€ ì•„ë‹Œì§€</returns>
     private bool Check_ThirteenOrphans(List<TileSO> list)
     {
         Dictionary<TileSO, int> dict = new Dictionary<TileSO, int>();
@@ -271,20 +271,18 @@ public class TenpaiChecker : MonoBehaviour
 
 
 
-    private static List<HandReading> HandReadingRecursion(List<TileSO> remaining_tiles, List<TileMeld> melds, bool tenpai_only, bool early_return)
+    private static List<HandReading> HandReadingRecursion(List<TileSO> remainTileList, List<TileMeld> melds, bool tenpaiOnly, bool earlyReturn)
     {
         List<HandReading> readings = new List<HandReading>();
 
-        // º¹»çÇÏ¿© ¸ñ·Ï Á¤·Ä
-        List<TileSO> hand = remaining_tiles.OrderBy(x => x.TileType).ThenBy(x => x.TileNumber).ToList();
+        // ë³µì‚¬í•˜ì—¬ ëª©ë¡ ì •ë ¬
+        List<TileSO> hand = remainTileList.OrderBy(x => x.TileType).ThenBy(x => x.TileNumber).ToList();
 
-        // ¸ğµå = Ã¹ ¹øÂ° ¸Å°³º¯¼ö¸¦ µÎ ¹øÂ° ¸Å°³º¯¼ö·Î ³ª´« ÈÄÀÇ ³ª¸ÓÁö¸¦ ¸®ÅÏ
-        // ¸¸¾à ÅÙÆÄÀÌ ¿Â¸®ÀÎµ¥, ÇÚµå »çÀÌÁî°¡ 3À¸·Î ³ª´³À»¶§ ³ª¸ÓÁö°¡ 1ÀÌ ¾Æ´Ï°Å³ª ÇÚµå »çÀÌÁî°¡ 13º¸´Ù Å©¸é 
-        // È¤Àº ÅÙÆÄÀÌ ¿Â¸®°¡ ¾Æ´Ñµ¥, ÇÚµå »çÀÌÁî°¡ 3À¸·Î ³ª´³À»¶§ ³ª¸ÓÁö°¡ 2°¡ ¾Æ´Ï°Å³ª ÇÚµå »çÀÌÁî°¡ 14º¸´Ù Å©¸é 
-        if ((tenpai_only && (hand.Count % 3 != 1 || hand.Count > 13)) || // pons/kans/chi´Â Å¸ÀÏ ¼ö¸¦ 3¸¸Å­ Á¦°ÅÇÏ¹Ç·Î Ç×»ó ¸ğµå 3 + 1 Å¸ÀÏÀ» ÅÙÆÄÀÌ ÇÚµå¿¡ µé°í ÀÖ¾î¾ß ÇÕ´Ï´Ù(½ÂÀÚÀÏ °æ¿ì + 2)
-            (!tenpai_only && (hand.Count % 3 != 2 || hand.Count > 14)))
+        // í…íŒŒì´ ë¿ë§Œ ì•„ë‹ˆë¼ í™”ë£Œë„ ì²´í¬í•˜ê¸° ìœ„í•´ì„œ tenpaiOnly ì‚¬ìš©, 13ê³¼ 14ì˜ í•¸ë“œ íƒ€ì¼ ê²½ìš°ì˜ ìˆ˜ ë‚˜ëˆ”
+        if ((tenpaiOnly && (hand.Count % 3 != 1 || hand.Count > 13)) ||
+            (!tenpaiOnly && (hand.Count % 3 != 2 || hand.Count > 14)))
             return readings;
-        else if (hand.Count == 1) // ¸Ó¸® ÆĞ ÇÏ³ª ±â´Ù¸®°í ÀÖ´Â °æ¿ì
+        else if (hand.Count == 1) // ë¨¸ë¦¬ íŒ¨ í•˜ë‚˜ ê¸°ë‹¤ë¦¬ê³  ìˆëŠ” ê²½ìš°
         {
             TileSO t = hand[0];
             TilePair pair = new TilePair(t, t, true);
@@ -294,34 +292,34 @@ public class TenpaiChecker : MonoBehaviour
 
             return readings;
         }
-        else if (hand.Count == 2) // ÀÌ°Ç ÆĞ 14°³ÀÎ °æ¿ì¿¡ ¸Ó¸® ¿Ï¼º½ÃÅ°´Â ¿ëµµ
+        else if (hand.Count == 2) // ì´ê±´ íŒ¨ 14ê°œì¸ ê²½ìš°ì— ë¨¸ë¦¬ ì™„ì„±ì‹œí‚¤ëŠ” ìš©ë„
         {
-            if (GameManager.Instance.IsSameTile(hand[0], hand[1])) // ¸¸¾à Å¸ÀÔÀÌ °°À¸¸é 
+            if (GameManager.Instance.IsSameTile(hand[0], hand[1])) // ë§Œì•½ íƒ€ì…ì´ ê°™ìœ¼ë©´ 
             {
                 TilePair pair = new TilePair(hand[0], hand[1]);
 
                 HandReading reading = new HandReading(melds, pair);
-                //if (reading.valid_keishiki) // ¿ª¾øÀ½ or ¾ø´Â Å¸ÀÏ ±â´Ù¸®´ÂÁö Ã¼Å©
+                //if (reading.valid_keishiki) // ì—­ì—†ìŒ or ì—†ëŠ” íƒ€ì¼ ê¸°ë‹¤ë¦¬ëŠ”ì§€ ì²´í¬
                 AppendReading(ref readings, reading);
             }
 
             return readings;
         }
 
-        // ÇÚµå »çÀÌÁî´ë·Î µ¹¾Æ°¨ 
+        // í•¸ë“œ ì‚¬ì´ì¦ˆëŒ€ë¡œ ëŒì•„ê° 
         for (int i = 0; i < hand.Count; i++)
         {
-            if (i != 0 && GameManager.Instance.IsSameTile(hand[i], hand[i - 1])) // ÀÌÀü Å¸ÀÏ°ú °°Àº Å¸ÀÏÀÌ¸é ÄÁÆ¼´º 
+            if (i != 0 && GameManager.Instance.IsSameTile(hand[i], hand[i - 1])) // ì´ì „ íƒ€ì¼ê³¼ ê°™ì€ íƒ€ì¼ì´ë©´ ì»¨í‹°ë‰´ 
                 continue;
 
             TileSO tile = hand[i];
 
-            List<TileSO> meld = new List<TileSO>(); // ¸öÅë ´ãÀ» ¸®½ºÆ® 
-            List<TileSO> copy = new List<TileSO>(); // ¸öÅë ¸¸µé°í ³²Àº Å¸ÀÏ ¸®½ºÆ®
+            List<TileSO> meld = new List<TileSO>(); // ëª¸í†µ ë‹´ì„ ë¦¬ìŠ¤íŠ¸ 
+            List<TileSO> copy = new List<TileSO>(); // ëª¸í†µ ë§Œë“¤ê³  ë‚¨ì€ íƒ€ì¼ ë¦¬ìŠ¤íŠ¸
 
-            // ÇÚµå Å¸ÀÏÀ» ´Ù µ¹¾Æ tile°ú °°À¸¸é meld¿¡ ³Ö°í ¾Æ´Ï¸é copy¿¡ ³Ö¾îÁØ´Ù 
-            // ±×¸®ÇÏ¿© °°Àº °ÍÀÌ 3°³ ¸ğÀÎ ¸öÅëÀ» Ã£´Â´Ù
-            // ex. (2, 2, 2) °°Àº °æ¿ì
+            // í•¸ë“œ íƒ€ì¼ì„ ë‹¤ ëŒì•„ tileê³¼ ê°™ìœ¼ë©´ meldì— ë„£ê³  ì•„ë‹ˆë©´ copyì— ë„£ì–´ì¤€ë‹¤ 
+            // ê·¸ë¦¬í•˜ì—¬ ê°™ì€ ê²ƒì´ 3ê°œ ëª¨ì¸ ëª¸í†µì„ ì°¾ëŠ”ë‹¤
+            // ex. (2, 2, 2) ê°™ì€ ê²½ìš°
             foreach (TileSO t in hand)
             {
                 if (meld.Count < 3 && GameManager.Instance.IsSameTile(t, tile))
@@ -330,34 +328,38 @@ public class TenpaiChecker : MonoBehaviour
                     copy.Add(t);
             }
 
-            if (meld.Count == 3) // ¸öÅë Ã£¾ÒÀ¸¸é
+            if (meld.Count == 3) // ëª¸í†µ ì°¾ì•˜ìœ¼ë©´ meldì— ì¶”ê°€í•´ì¤Œ
             {
-                TileMeld m = new TileMeld(meld[0], meld[1], meld[2]); // ¹­¾îÁÖ°í
+                TileMeld m = new TileMeld(meld[0], meld[1], meld[2]);
 
-                List<TileMeld> new_melds = new List<TileMeld>();
+                List<TileMeld> newMelds = new List<TileMeld>();
 
                 foreach (var item in melds)
                 {
-                    new_melds.Add(item);
+                    newMelds.Add(item);
                 }
 
-                //new_melds.Add_all(melds); // ¾Æ ÀÌ¹Ì ¿ÀÇÂ µÈ °Íµé ´Ù ³Ö¾îÁÖ°í 
-                new_melds.Add(m); // ÀÌ¹ø¿¡ Ã£Àº Æşµµ ³Ö¾îÁÖ°í 
-                                  // ´Ù½Ã Àç±Í·Î È£ÃâÇÏ´Âµ¥
-                AppendReadingList(ref readings, HandReadingRecursion(copy, new_melds, tenpai_only, early_return)); // ³²Àº Ä«ÇÇ¶û ¸áµå ´Ù½Ã ³Ö¾îÁÜ 
+                newMelds.Add(m);
 
-                if (early_return && readings.Count > 0) // ¾ó¸® ¸®ÅÏÀÌ°í ¸®µùÁî »çÀÌÁî°¡ 0º¸´Ù Å©¸é ¸®µùÁî ¸®ÅÏ
-                    return readings; // ±Ùµ¥ ¸®µùÁî°¡ ¹¹Áö 
+                // ë‹¤ì‹œ ì¬ê·€ë¡œ í˜¸ì¶œ
+                AppendReadingList(ref readings, HandReadingRecursion(copy, newMelds, tenpaiOnly, earlyReturn));
+
+                if (earlyReturn && readings.Count > 0) // ë§Œì•½ íŒ¨ ì™„ì„±ë˜ë©´ ë¦¬í„´  
+                    return readings;
             }
-            // ¸¸¾à Å¸ÀÏÀÌ ¼öÆĞ°í Å¸ÀÏÀÌ 6º¸´Ù ÀÛ°Å³ª °°À¸¸é(¿Ö 6±îÁö¸¸ Ã¼Å©ÇÏ³Ä¸é 6->7ÀÌ°í 7 8 9 ÇÏ¸é Ã¼Å© µÇ´Ï±î )
+            // 1~7 ê¹Œì§€ì˜ ìˆ˜íŒ¨ì¸ ê²½ìš°
+            // ì—°ì†í•˜ëŠ” í–‰ì„ ë§Œë“¤ ìˆ˜ ìˆëŠ”ì§€ ì²´í¬í•˜ëŠ” êµ¬ê°„
+            // ex. (1, 2, 3) or (5, 6, 7) ë“±
             if (tile.TileType != TileType.Word && tile.TileNumber <= 7)
             {
-                // Å¸ÀÏÀÌ °¡Àå ³·Àº ¼ıÀÚ·Î ÇàÀ» ¸¸µé ¼ö ÀÖ´ÂÁö È®ÀÎÇÕ´Ï´Ù(Áßº¹ Çà ¼ø¿­À» »ı·«ÇÏ±â À§ÇØ °¡Àå ³·Àº ¼ıÀÚ¸¸ »ç¿ë)
+
                 TileSO one_more = null;
                 TileSO two_more = null;
-                copy.Clear(); // Ä«ÇÇ Å¬¸®¾îÇØ¼­ ÀçÈ°¿ë ÇÒ ¼ö ÀÖ°Ô 
+                copy.Clear();
+
                 bool isFirst = true;
-                foreach (TileSO t in hand) // ´ëÃæ ¿¬¼ÓÇÏ´Â °Å ¿ø¸ğ¾î Åõ¸ğ¾î¿¡ ³Ö¾îÁÖ°í ³ª¸ÓÁö copy¿¡³Ö¾îÁÖ´Â ¹İº¹¹® 
+
+                foreach (TileSO t in hand) // tileì´ë‘ ì—°ì†í•˜ëŠ”ì§€ ìˆ«ì ë¹„êµí•´ì„œ ì°¨ì´ë‚˜ëŠ” ëŒ€ë¡œ one twoì— ë„£ì–´ì¤Œ
                 {
                     if (t == tile && isFirst)
                     {
@@ -372,95 +374,93 @@ public class TenpaiChecker : MonoBehaviour
                         copy.Add(t);
                 }
 
-                if (one_more != null && two_more != null) // µÑ ´Ù ¾È ºñ¾îÀÕÀ¸¸é 
+                if (one_more != null && two_more != null) // ë‘˜ ë‹¤ ì•ˆ ë¹„ì–´ì‡ìœ¼ë©´ 
                 {
-                    TileMeld m = new TileMeld(tile, one_more, two_more); // Å¸ÀÏ, ¿ø¸ğ¾î Åõ¸ğ¾î·Î ³Ö¾îÁÜ 
+                    TileMeld m = new TileMeld(tile, one_more, two_more); // ë¬¶ì–´ì¤Œ
 
-                    List<TileMeld> new_melds = new List<TileMeld>(); // »õ ¸áµå ¸®½ºÆ® ¸¸µé°í 
+                    List<TileMeld> newMelds = new List<TileMeld>();
                     foreach (var item in melds)
                     {
-                        new_melds.Add(item);
+                        newMelds.Add(item);
                     }
-                    //new_melds.Add_all(melds); // ±âÁ¸ ¸áµåµé ³Ö°í 
-                    new_melds.Add(m); // ÀÌ¹ø¿¡ Ã£Àº ¿¬¼Ó ³Ö¾îÁÖ°í 
+                    newMelds.Add(m); // ì´ë²ˆì— ì°¾ì€ ì—°ì† ë„£ì–´ì£¼ê³  
 
-                    // Ãß°¡ ¸®µù È£ÃâÇÔ 
-                    // ±Ùµ¥ °Å±â¿¡ ÀÌ ÇÔ¼ö¸¦ ÀÚÃ¼ÀûÀ¸·Î ´Ù½Ã È£ÃâÇØ¿ä (¿ÖÁö)
-                    AppendReadingList(ref readings, HandReadingRecursion(copy, new_melds, tenpai_only, early_return));
+                    // ì¬ê·€ ëŒë¦¬ê³ 
+                    AppendReadingList(ref readings, HandReadingRecursion(copy, newMelds, tenpaiOnly, earlyReturn));
 
-                    if (early_return && readings.Count > 0) // ¾ó¸® ¸®ÅÏÀÌ¸é¼­ ¸®µù »çÀÌÁî°¡ 0º¸´Ù Å©¸é 
-                        return readings; // ¸®µùÀ» ¹İÈ¯ÇÑ¤§ ¤¿
+                    if (earlyReturn && readings.Count > 0) // íŒ¨ ì™„ì„±ë˜ì—ˆìœ¼ë©´ ë¦¬í„´
+                        return readings;
                 }
             }
 
-            // ´ëÃæ ¸Ó¸® Ã£´Â´Ü ¶æÀÎµí 
-            // ¸¶Áö¸· ¿É¼ÇÀº ½ÖÀ» Ã£°í ¸¶Áö¸· Á¶ÇÕÀ» ±â´Ù¸®°í ÀÖ´ÂÁö È®ÀÎÇÏ´Â °ÍÀÔ´Ï´Ù(ÀÌ°ÍÀº ¼Õ¿¡ Å¸ÀÏÀÌ 4°³ ³²¾Æ ÀÖ°í ÅÙÆÄÀÌ ¿Â¸®ÀÎ °æ¿ì¿¡¸¸ °¡´ÉÇÕ´Ï´Ù)
-            // Last option is to find a pair, and see if we are waiting for our last combination (this can only be if we have 4 tiles left in the hand, and are tenpai only)
+            // ë§Œì•½ ë‚¨ì€ ì†íŒ¨ê°€ 4ê°œì¸ ê²½ìš° ë¨¸ë¦¬ or ì™„ì„±í•  ëª¸í†µ ì°¾ëŠ” êµ¬ê°„
             if (hand.Count == 4)
             {
                 int s = hand.Count;
                 TileSO t = null;
                 TileSO n1 = null, n2 = null;
-                if (GameManager.Instance.IsSameTile(hand[(i + 1) % s], hand[(i + 2) % s])) // ¾Æ¹«Æ° 1¹øÅ¸ÀÏ ÇÏ°í 2¹ø Å¸ÀÏ Å¸ÀÔ °°À¸¸é 
+
+                // n1, n2ê°€ ë¨¸ë¦¬ê³  ê°™ì€ íƒ€ì¼ ì°¾ì•„ì„œ ë„£ì–´ì£¼ëŠ” ê³¼ì • 
+                if (GameManager.Instance.IsSameTile(hand[(i + 1) % s], hand[(i + 2) % s])) // ì•„ë¬´íŠ¼ 1ë²ˆíƒ€ì¼ í•˜ê³  2ë²ˆ íƒ€ì¼ íƒ€ì… ê°™ìœ¼ë©´ 
                 {
                     n1 = hand[(i + 1) % s];
                     n2 = hand[(i + 2) % s];
                     t = hand[(i + 3) % s];
                 }
-                else if (GameManager.Instance.IsSameTile(hand[(i + 1) % s], hand[(i + 3) % s])) // 1 3 °°À¸¸é 
+                else if (GameManager.Instance.IsSameTile(hand[(i + 1) % s], hand[(i + 3) % s])) // 1 3 ê°™ìœ¼ë©´ 
                 {
                     n1 = hand[(i + 1) % s];
                     t = hand[(i + 2) % s];
                     n2 = hand[(i + 3) % s];
                 }
-                else if (GameManager.Instance.IsSameTile(hand[(i + 2) % s], hand[(i + 3) % s])) // 2 3 °°À¸¸é 
+                else if (GameManager.Instance.IsSameTile(hand[(i + 2) % s], hand[(i + 3) % s])) // 2 3 ê°™ìœ¼ë©´ 
                 {
                     t = hand[(i + 1) % s];
                     n1 = hand[(i + 2) % s];
                     n2 = hand[(i + 3) % s];
-                }  // °°Àº Å¸ÀÔÀÇ Å¸ÀÏµéÀ» n1 n2 ¿¡ ³Ö¾îÁÖ°í ³²´Â °É t¿¡ ³Ö´Â´Ù 
-                   // ¾ê³×´Â Å¸ÀÔÀÌ ¿ì¸®¶û ´Ù¸£°Ô °¢°¢ Å¸ÀÏ T1 S1¸¶´Ù ÇÏ³ª¾¿ÀÌ´Ï±î 
-                   // ÀÏÄ¡ÇÏ´Â ¸Ó¸® Å¸ÀÏÀ» Ã£¾ÆÁÖ´Â °Å¶ó°í º¸¸é µÊ 
-                   // n1 n2´Â ¸Ó¸® 1 ¸Ó¸® 2 ÀÎ°Í 
+                }
 
-                if (t != null) // ¸Ó¸®°¡ Ã£¾ÆÁ®¼­ t°¡ nullÀÌ ¾Æ´Ï¸é 
+                if (t != null) // ë¨¸ë¦¬ê°€ ì°¾ì•„ì ¸ì„œ tê°€ nullì´ ì•„ë‹ˆë©´ 
                 {
-                    if (GameManager.Instance.IsSameTile(t, tile)) // We have two remaining pairs // ¿ì¸° °¡Á³´Ù µÎ °³ÀÇ ³²Àº ÆĞ¸¦ 
-                    { // ±×´Ï±î Å¸ÀÏÀÌ¶û tµµ °°¾Æ¼­ ¸Ó¸® µÎ ½ÖÀÌ¸é 
-                        TilePair pair = new TilePair(tile, t); // Å¸ÀÏÀÌ¶û t Æä¾î·Î ¸¸µé°í 
-                        List<TileMeld> new_melds = new List<TileMeld>();
-                        //new_melds.Add_all(melds);
+                    if (GameManager.Instance.IsSameTile(t, tile)) // ë‚¨ì€ ë‘ ê°œì˜ íŒ¨ ë¹„êµ
+                    {
+                        // ê¸°ë‹¤ë¦¬ëŠ” 4ê°œì˜ íŒ¨ê°€ (2, 2) , (4, 4) ì²˜ëŸ¼ ë‘ ê°œì˜ ë¨¸ë¦¬ë¥¼ ë§Œë“¤ ìˆ˜ ìˆëŠ” ê²½ìš° 
+
+                        TilePair pair = new TilePair(tile, t); // ê°™ìœ¼ë©´ ë¨¸ë¦¬ ë§Œë“¤ì–´ì„œ ë„£ì–´ì£¼ê¸°
+                        List<TileMeld> newMelds = new List<TileMeld>();
+
                         foreach (var item in melds)
                         {
-                            new_melds.Add(item);
+                            newMelds.Add(item);
                         }
-                        new_melds.Add(new TileMeld(n1, n2, n1, isNeed: true)); // ´º ¸áµå¿¡ ¸Ó¸® 1 + ¾ø´Â °Å ÇÏ³ª °°Àº °Å ¿À¸§ÆĞÀÎ°Å ³Ö¾î¼­ ÇÏ°í 
-                        HandReading reading = new HandReading(new_melds, pair); // ¸Ó¸®1ÀÌ ÆşÀÎ °æ¿ì, ¸Ó¸®2°¡ ¸Ó¸®ÀÎ °æ¿ì¸¦ ÇÚµå ¸®µùÀ¸·Î ³Ö°í 
-                                                                                //if (reading.valid_keishiki) // ¿ª¾øÀ½ °Ë»ç¸¦ ½ÃÅ² µÚ 
-                        AppendReading(ref readings, reading); // Ãß°¡ ¸®µù¿¡ ³Ö¾î¹ö¸°´Ù  ¾Æ¹«Æ° ±×·¡¼­ ÀÌ°Ô ¸®µùÁî°¡ ¸®½ºÆ®°í ÀÌ¹Ì µ¿ÀÏÇÑ°Ô ÀÕ´Â °Ô ¾Æ´Ï¸é ³Ö¾îÁÖ´Â ±×°Çµí 
 
-                        pair = new TilePair(n1, n2); // ÀÌÁ¦ Æä¾î¸¦ ´Ù¸¥ °É·Î ¸¸µé°í
-                        new_melds.Clear();
+                        newMelds.Add(new TileMeld(n1, n2, n1, isNeed: true));
+                        HandReading reading = new HandReading(newMelds, pair);
+                        //if (reading.valid_keishiki) // ì—­ì—†ìŒ ê²€ì‚¬ë¥¼ ì‹œí‚¨ ë’¤ 
+                        AppendReading(ref readings, reading);
+
+                        pair = new TilePair(n1, n2); // n1 n2ë¡œë„ í˜ì–´ ë§Œë“¤ì–´ì„œ ë„£ì–´ì¤Œ 
+                        newMelds.Clear();
                         foreach (var item in melds)
                         {
-                            new_melds.Add(item);
+                            newMelds.Add(item);
                         }
-                        //new_melds.Add_all(melds);
-                        new_melds.Add(new TileMeld(tile, t, tile, isNeed: true)); // ¾Æ¹«Æ° ¸Ó¸® 2°¡ ÆşÀÎ °æ¿ì·Î ¶È°°ÀÌ ÇØÁÖ°í 
-                        reading = new HandReading(new_melds, pair); //  ¾Æ¹«Æ° ³Ö¾îÁÖ°í
-                                                                    //if (reading.valid_keishiki)
-                        AppendReading(ref readings, reading); // ¶È°°ÀÌ Ãß°¡°Ë»ç  
+                        //newMelds.Add_all(melds);
+                        newMelds.Add(new TileMeld(tile, t, tile, isNeed: true));
+                        reading = new HandReading(newMelds, pair);
+                        //if (reading.valid_keishiki)
+                        AppendReading(ref readings, reading);
 
-                        return readings; // ±× ´ã¿¡ ¸®µùÁî¸¦ ¹İÈ¯ 
-                    } // ¿ì¸®´Â Æä¾î¿Í 3¿¬¼ÓÀ» ±â´Ù¸®°í ÀÕ´Ù 
-                    else if (tile.IsNeighbour(t) || tile.IsSecondNeighbour(t)) // We have a pair and are waiting on the final triplet
-                    { // ¸¸¾à t°¡ Å¸ÀÏÀÇ ¹Ù·Î ¿· Å¸ÀÏÀÌ°Å³ª ÇÑ Ä­ ¶³¾îÁø Å¸ÀÏÀÌ¸é 
-                        TilePair pair = new TilePair(n1, n2); // n12·Î ¸Ó¸® Æä¾î ¸¸µé°í 
+                        return readings; // ì™„ì„± íŒ¨ ë¦¬í„´ 
+                    }
+                    else if (tile.IsNeighbour(t) || tile.IsSecondNeighbour(t)) // ê¸°ë‹¤ë¦¬ëŠ” íŒ¨ 4ê°œê°€ ë¨¸ë¦¬ í•˜ë‚˜ì™€ ëª¸í†µì„ ë§Œë“¤ ìˆ˜ ìˆëŠ” í•˜ë‚˜ë¼ë©´ 
+                    {
+                        TilePair pair = new TilePair(n1, n2); // n1, n2ë¡œ ë¨¸ë¦¬ í˜ì–´ ë§Œë“¤ê³  
 
                         int v1 = (int)t.TileNumber;
                         int v2 = (int)tile.TileNumber;
 
-                        TileSO t1, t2; // ¼ıÀÚ°¡ ´õ Å« Å¸ÀÏÀÌ 2°¡ µÇµµ·Ï ´ëÀÔ ÇØÁÖ´Â ÀÌÇÁ¹® 
+                        TileSO t1, t2; // ìˆ«ìê°€ ë” í° íƒ€ì¼ì´ 2ê°€ ë˜ë„ë¡ ëŒ€ì… í•´ì£¼ëŠ” if
                         if (v1 < v2)
                         {
                             t1 = t;
@@ -472,57 +472,63 @@ public class TenpaiChecker : MonoBehaviour
                             t2 = t;
                         }
 
-                        v1 = (int)t1.TileNumber; // ±×¸®°í Å¸ÀÏ Å¸ÀÔÀ» ´Ù½Ã ³Ö¾îÁÖ°í 
+                        // ë‚¨ì€ í•˜ë‚˜ì˜ ëª¸í†µ íƒ€ì¼ì„ ê³„ì‚°í•˜ê¸° ìœ„í•´ í•„ìš”
+                        v1 = (int)t1.TileNumber;
                         v2 = (int)t2.TileNumber;
 
-                        List<TileMeld> new_melds = new List<TileMeld>(); // ´º ¸áµå ¸¸µé°í
-                                                                         //new_melds.Add_all(melds); // ±âÁ¸ ¸áµåÁîÀÇ ¸ğµç °É ³Ö¾îÁÜ 
+                        List<TileMeld> newMelds = new List<TileMeld>();
+
                         foreach (var item in melds)
                         {
-                            new_melds.Add(item);
+                            newMelds.Add(item);
                         }
 
-                        if (tile.IsSecondNeighbour(t)) // ¸¸¾à °£Â¯´ë±â¸é 
+                        if (tile.IsSecondNeighbour(t)) // ë§Œì•½ ê°„ì§±ëŒ€ê¸°ë©´ ëª¸í†µ ê°€ìš´ë°ì— ë“¤ì–´ê°ˆ ì˜¤ë¦„íŒ¨ êµ¬í•´ì„œ ë„£ì–´ì¤Œ 
                         {
-                            int middle = (v1 + v2) / 2; // Need a new tile in the middle // ¹Ìµå Å¸ÀÏÀ» ±¸ÇØÁØ´Ù 
-                            TileSO SO = GameManager.Instance.GetTile(t.TileType,middle);
-                            new_melds.Add(new TileMeld(t1, t2, SO, isNeed: true)); // ±×¸®°í ´º ¸áµå¿¡ ³Ö°í
-                                                                                   // ¾Æ ÀÌÁ¦ ¾Ë¾Ò´Âµ¥ Å¸ÀÏ ID°¡ -1ÀÌ¸é ¿À¸§ÆĞ Ãë±ŞÀÎµí 
-                            HandReading reading = new HandReading(new_melds, pair);
-                            //if (reading.valid_keishiki) // ¾Æ¹«Æ° ¿ª ¾øÀ½ °Ë»çÇÏ°í ³Ö¾îÁÜ 
+                            int middle = (v1 + v2) / 2;
+                            TileSO SO = GameManager.Instance.GetTile(t.TileType, middle);
+
+                            newMelds.Add(new TileMeld(t1, t2, SO, isNeed: true));
+
+                            HandReading reading = new HandReading(newMelds, pair);
+                            //if (reading.valid_keishiki) // ì•„ë¬´íŠ¼ ì—­ ì—†ìŒ ê²€ì‚¬í•˜ê³  ë„£ì–´ì¤Œ 
                             AppendReading(ref readings, reading);
                         }
                         else
                         {
-                            if (!t1.IsTerminalTile()) // t1ÀÌ ³ëµÎÆĞ°¡ ¾Æ´Ï¶ó¸é 
-                            { // ´ëÃæ ¿À¸§ÆĞ t1 t2·Î ³Ö°í
+
+                            // ì˜¤ë¦„íŒ¨, t1, t2 ë„£ì–´ì£¼ëŠ” ì½”ë“œ 
+                            if (!t1.IsTerminalTile()) // t1ì´ ë…¸ë‘íŒ¨ê°€ ì•„ë‹ˆë¼ë©´ 
+                            {
 
                                 TileSO SO = GameManager.Instance.GetTile(t.TileType, v1 - 1);
-                                new_melds.Add(new TileMeld(t1, t2, SO, isNeed: true));
+                                newMelds.Add(new TileMeld(t1, t2, SO, isNeed: true));
 
-                                HandReading reading = new HandReading(new_melds, pair);
+                                HandReading reading = new HandReading(newMelds, pair);
                                 //if (reading.valid_keishiki)
                                 AppendReading(ref readings, reading);
                             }
 
-                            if (!t2.IsTerminalTile()) // t2°¡ ³ëµÎÆĞ°¡ ¾Æ´Ï¶ó¸é 
-                            { // t1 t2 ¿À¸§ÆĞ ·Î ³Ö´Â´Ù´Â ¶æ 
-                                new_melds.Clear();
+
+                            // t1 t2 ì˜¤ë¦„íŒ¨ ë¡œ ë„£ëŠ”ë‹¤ëŠ” ëœ» 
+                            if (!t2.IsTerminalTile()) // t2ê°€ ë…¸ë‘íŒ¨ê°€ ì•„ë‹ˆë¼ë©´ 
+                            {
+                                newMelds.Clear();
                                 foreach (var item in melds)
                                 {
-                                    new_melds.Add(item);
+                                    newMelds.Add(item);
                                 }
-                                //new_melds.Add_all(melds);
-                                TileSO SO = GameManager.Instance.GetTile(t.TileType, v2 + 1);
-                                new_melds.Add(new TileMeld(t1, t2, SO, isNeed: true));
 
-                                HandReading reading = new HandReading(new_melds, pair);
+                                TileSO SO = GameManager.Instance.GetTile(t.TileType, v2 + 1);
+                                newMelds.Add(new TileMeld(t1, t2, SO, isNeed: true));
+
+                                HandReading reading = new HandReading(newMelds, pair);
                                 //if (reading.valid_keishiki)
                                 AppendReading(ref readings, reading);
                             }
                         }
 
-                        return readings; // ±×·¡¼­ ¿Ï¼ºµÈ ÆĞ¸¦ ¸®ÅÏ 
+                        return readings;
                     }
                 }
             }
