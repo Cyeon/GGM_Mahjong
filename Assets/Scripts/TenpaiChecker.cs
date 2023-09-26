@@ -56,12 +56,12 @@ public class TenpaiChecker : MonoBehaviour
             Debug.Log("Seven Pair Tenpai");
             PrintNeedTile();
             tenpai.SetActive(true);
+            return;
         }
         else
         {
             Debug.Log("No Seven Pair Tenpai");
             tenpai.SetActive(false);
-
         }
         _tenpaiNeed.Clear();
 
@@ -70,6 +70,7 @@ public class TenpaiChecker : MonoBehaviour
             Debug.Log("13 word Tenpai");
             PrintNeedTile();
             tenpai.SetActive(true);
+            return;
         }
         else
         {
@@ -83,6 +84,7 @@ public class TenpaiChecker : MonoBehaviour
             Debug.Log("TENPAI");
             PrintNeedTile();
             tenpai.SetActive(true);
+            return;
         }
         else
         {
@@ -116,7 +118,25 @@ public class TenpaiChecker : MonoBehaviour
             if (dict.ContainsKey(list[i]))
                 dict[list[i]]++;
             else
-                dict.Add(list[i], 1);
+            {
+                bool isAdd = false;
+
+                if (list[i].TileNumber == 5 && list[i].TileType != TileType.Word)
+                {
+                    foreach (TileSO item in dict.Keys)
+                    {
+                        if (IsSameTile(item, list[i]))
+                        {
+                            dict[item]++;
+                            isAdd = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!isAdd)
+                    dict.Add(list[i], 1);
+            }
         }
 
         foreach (TileSO item in dict.Keys)

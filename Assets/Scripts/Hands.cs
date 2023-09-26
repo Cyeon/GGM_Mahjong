@@ -52,7 +52,7 @@ public class Hands : MonoBehaviour
         for (int i = 0; i < _handTileObjects.Count; i++)
         {
             _handTileObjects[i].GetComponent<Tile>().TileSO = _handTiles[i];
-            _handTileObjects[i].transform.GetChild(1).GetComponent<Image>().sprite = _handTiles[i].TileSprite;
+            _handTileObjects[i].transform.Find("Image").GetComponent<Image>().sprite = _handTiles[i].TileSprite;
         }
     }
 

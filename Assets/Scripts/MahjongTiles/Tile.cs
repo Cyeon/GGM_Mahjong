@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [Serializable]
-public class Tile : MonoBehaviour
+public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public TileSO TileSO = null;
 
@@ -22,10 +23,13 @@ public class Tile : MonoBehaviour
 
     public Hands hand;
 
+    private GameObject _select = null;
+
     public void Awake()
     {
         btn = GetComponentInChildren<Button>();
         btn.onClick.AddListener(OnClickBtn);
+        _select = transform.Find("Select").gameObject;
     }
 
     public void OnClickBtn()
@@ -41,6 +45,18 @@ public class Tile : MonoBehaviour
     {
         _isBackDora = isBackDora;
     }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        _select.SetActive(true);
+        transform.position += Vector3.up*5;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        _select.SetActive(false);
+        transform.position -= Vector3.up*5;
+    }
 }
 
 /// <summary>
@@ -52,12 +68,12 @@ public class TilePair
     public TileSO _pairTwo = null;
     public bool _isNeed = false;
 
-/// <summary>
-/// 
-/// </summary>
-/// <param name="one"></param>
-/// <param name="two"></param>
-/// <param name="isNeed">TWO가 오름패면 true로</param>
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="one"></param>
+    /// <param name="two"></param>
+    /// <param name="isNeed">TWO가 오름패면 true로</param>
     public TilePair(TileSO one, TileSO two, bool isNeed = false)
     {
         _pairOne = one;
