@@ -55,18 +55,27 @@ public class TenpaiChecker : MonoBehaviour
         {
             Debug.Log("Seven Pair Tenpai");
             PrintNeedTile();
+            tenpai.SetActive(true);
         }
         else
+        {
             Debug.Log("No Seven Pair Tenpai");
+            tenpai.SetActive(false);
+
+        }
         _tenpaiNeed.Clear();
 
         if (Check_ThirteenOrphans(list))
         {
             Debug.Log("13 word Tenpai");
             PrintNeedTile();
+            tenpai.SetActive(true);
         }
         else
+        {
             Debug.Log("No 13 word Tenpai");
+            tenpai.SetActive(false);
+        }
         _tenpaiNeed.Clear();
 
         if (Check_Tenpai(list))
@@ -190,7 +199,7 @@ public class TenpaiChecker : MonoBehaviour
 
     private bool Check_Tenpai(List<TileSO> list)
     {
-        List<HandReading> tileList = hand_reading_recursion(list, new List<TileMeld>(), true, false);
+        List<HandReading> tileList = HandReadingRecursion(list, new List<TileMeld>(), true, false);
         if (tileList.Count > 0)
         {
             foreach (HandReading reading in tileList)
@@ -247,11 +256,11 @@ public class TenpaiChecker : MonoBehaviour
         return false;
     }
 
-    private static List<HandReading> hand_reading_recursion(List<TileSO> remaining_tiles, List<TileMeld> melds, bool tenpai_only, bool early_return)
+    private static List<HandReading> HandReadingRecursion(List<TileSO> remaining_tiles, List<TileMeld> melds, bool tenpai_only, bool early_return)
     {
         List<HandReading> readings = new List<HandReading>();
 
-        // 목록을 정렬하기 때문에 새 목록에 복사해야 합니다
+        // 복사하여 목록 정렬
         List<TileSO> hand = remaining_tiles.OrderBy(x => x.TileType).ThenBy(x => x.TileNumber).ToList();
 
         // 모드 = 첫 번째 매개변수를 두 번째 매개변수로 나눈 후의 나머지를 리턴
@@ -260,7 +269,7 @@ public class TenpaiChecker : MonoBehaviour
         if ((tenpai_only && (hand.Count % 3 != 1 || hand.Count > 13)) || // pons/kans/chi는 타일 수를 3만큼 제거하므로 항상 모드 3 + 1 타일을 텐파이 핸드에 들고 있어야 합니다(승자일 경우 + 2)
             (!tenpai_only && (hand.Count % 3 != 2 || hand.Count > 14)))
             return readings;
-        else if (hand.Count == 1) // 만약 하나의 타일이 남았다면 then 우리는 싱글 타일 페어를 기다리고 잇습니다 
+        else if (hand.Count == 1) // 머리 패 하나 기다리고 있는 경우
         {
             TileSO t = hand[0];
             TilePair pair = new TilePair(t, t, true);
@@ -269,16 +278,16 @@ public class TenpaiChecker : MonoBehaviour
             AppendReading(ref readings, reading);
 
             return readings;
-        }  // 만약 우리가 위닝 핸드(가뭔데씹덕아) 를 가지고 있다면, 우리의 마지막 두 타일은 서로 같아야만 합니다 
-        else if (hand.Count == 2) // If we have a winning hand, then our last two tiles must be the same
+        }
+        else if (hand.Count == 2) // 이건 패 14개인 경우에 머리 완성시키는 용도
         {
             if (IsSameTile(hand[0], hand[1])) // 만약 타입이 같으면 
             {
-                TilePair pair = new TilePair(hand[0], hand[1]); // 페어를 만들어요 
+                TilePair pair = new TilePair(hand[0], hand[1]);
 
                 HandReading reading = new HandReading(melds, pair);
-                //if (reading.valid_keishiki) // 역없음인지, 5번째 타일을 기다리는지(타일을 다 썼는지) 체크해요 
-                AppendReading(ref readings, reading); // 그렇다면 읽기 추가 <??  
+                //if (reading.valid_keishiki) // 역없음 or 없는 타일 기다리는지 체크
+                AppendReading(ref readings, reading);
             }
 
             return readings;
@@ -287,27 +296,28 @@ public class TenpaiChecker : MonoBehaviour
         // 핸드 사이즈대로 돌아감 
         for (int i = 0; i < hand.Count; i++)
         {
-            if (i != 0 && IsSameTile(hand[i], hand[i - 1])) // i가 0이 아니고 hand i 랑 이전 거랑 같은 타일 타입이면 컨티뉴(대체왜지?)
+            if (i != 0 && IsSameTile(hand[i], hand[i - 1])) // 이전 타일과 같은 타일이면 컨티뉴 
                 continue;
 
-            // 우리 타일로 세쌍둥이를 만들 수 있는지 확인합니다
             TileSO tile = hand[i];
 
-            List<TileSO> copy = new List<TileSO>(); // 우리가 만들 세 쌍둥이를 제외한 우리 손의 모든 타일을 포함하는 목록
-            List<TileSO> meld = new List<TileSO>(); // 이게 아마 운? 그건듯 근데 이번에는 우리가 찾는 걸 담아두는 역할인듯   
+            List<TileSO> meld = new List<TileSO>(); // 몸통 담을 리스트 
+            List<TileSO> copy = new List<TileSO>(); // 몸통 만들고 남은 타일 리스트
 
-            // 핸드의 타일을 다 돈다 
+            // 핸드 타일을 다 돌아 tile과 같으면 meld에 넣고 아니면 copy에 넣어준다 
+            // 그리하여 같은 것이 3개 모인 몸통을 찾는다
+            // ex. (2, 2, 2) 같은 경우
             foreach (TileSO t in hand)
             {
-                if (meld.Count < 3 && IsSameTile(t, tile)) // 만약 meld 사이즈가 채워지지 않은 상태에서 지금 for 문 도는 타일이랑 foreach 타일이랑 같으면 
-                    meld.Add(t); // meld에 넣고
+                if (meld.Count < 3 && IsSameTile(t, tile))
+                    meld.Add(t);
                 else
-                    copy.Add(t); // 아니면 copy에 
+                    copy.Add(t);
             }
 
-            if (meld.Count == 3) // meld가 3이면 
+            if (meld.Count == 3) // 몸통 찾았으면
             {
-                TileMeld m = new TileMeld(meld[0], meld[1], meld[2], true); // 그걸로 하나 만드는데 걍 세개짜리 하나로 묶어주는 건듯  
+                TileMeld m = new TileMeld(meld[0], meld[1], meld[2]); // 묶어주고
 
                 List<TileMeld> new_melds = new List<TileMeld>();
 
@@ -318,8 +328,8 @@ public class TenpaiChecker : MonoBehaviour
 
                 //new_melds.Add_all(melds); // 아 이미 오픈 된 것들 다 넣어주고 
                 new_melds.Add(m); // 이번에 찾은 퐁도 넣어주고 
-                // 다시 재귀로 호출하는데
-                AppendReadingList(ref readings, hand_reading_recursion(copy, new_melds, tenpai_only, early_return)); // 남은 카피랑 멜드 다시 넣어줌 
+                                  // 다시 재귀로 호출하는데
+                AppendReadingList(ref readings, HandReadingRecursion(copy, new_melds, tenpai_only, early_return)); // 남은 카피랑 멜드 다시 넣어줌 
 
                 if (early_return && readings.Count > 0) // 얼리 리턴이고 리딩즈 사이즈가 0보다 크면 리딩즈 리턴
                     return readings; // 근데 리딩즈가 뭐지 
@@ -361,7 +371,7 @@ public class TenpaiChecker : MonoBehaviour
 
                     // 추가 리딩 호출함 
                     // 근데 거기에 이 함수를 자체적으로 다시 호출해요 (왜지)
-                    AppendReadingList(ref readings, hand_reading_recursion(copy, new_melds, tenpai_only, early_return));
+                    AppendReadingList(ref readings, HandReadingRecursion(copy, new_melds, tenpai_only, early_return));
 
                     if (early_return && readings.Count > 0) // 얼리 리턴이면서 리딩 사이즈가 0보다 크면 
                         return readings; // 리딩을 반환한ㄷ ㅏ
@@ -394,9 +404,9 @@ public class TenpaiChecker : MonoBehaviour
                     n1 = hand[(i + 2) % s];
                     n2 = hand[(i + 3) % s];
                 }  // 같은 타입의 타일들을 n1 n2 에 넣어주고 남는 걸 t에 넣는다 
-                // 얘네는 타입이 우리랑 다르게 각각 타일 T1 S1마다 하나씩이니까 
-                // 일치하는 머리 타일을 찾아주는 거라고 보면 됨 
-                // n1 n2는 머리 1 머리 2 인것 
+                   // 얘네는 타입이 우리랑 다르게 각각 타일 T1 S1마다 하나씩이니까 
+                   // 일치하는 머리 타일을 찾아주는 거라고 보면 됨 
+                   // n1 n2는 머리 1 머리 2 인것 
 
                 if (t != null) // 머리가 찾아져서 t가 null이 아니면 
                 {
@@ -451,7 +461,7 @@ public class TenpaiChecker : MonoBehaviour
                         v2 = (int)t2.TileNumber;
 
                         List<TileMeld> new_melds = new List<TileMeld>(); // 뉴 멜드 만들고
-                        //new_melds.Add_all(melds); // 기존 멜드즈의 모든 걸 넣어줌 
+                                                                         //new_melds.Add_all(melds); // 기존 멜드즈의 모든 걸 넣어줌 
                         foreach (var item in melds)
                         {
                             new_melds.Add(item);
@@ -463,7 +473,7 @@ public class TenpaiChecker : MonoBehaviour
                             TileSO SO = new TileSO();
                             SO.SetData(t.TileType, middle);
                             new_melds.Add(new TileMeld(t1, t2, SO, isNeed: true)); // 그리고 뉴 멜드에 넣고
-                            // 아 이제 알았는데 타일 ID가 -1이면 오름패 취급인듯 
+                                                                                   // 아 이제 알았는데 타일 ID가 -1이면 오름패 취급인듯 
                             HandReading reading = new HandReading(new_melds, pair);
                             //if (reading.valid_keishiki) // 아무튼 역 없음 검사하고 넣어줌 
                             AppendReading(ref readings, reading);
@@ -508,6 +518,4 @@ public class TenpaiChecker : MonoBehaviour
 
         return readings;
     }
-
-
 }
