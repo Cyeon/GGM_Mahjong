@@ -24,12 +24,14 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public Hands hand;
 
     private GameObject _select = null;
+    private Image _image = null;
 
     public void Awake()
     {
         btn = GetComponentInChildren<Button>();
         btn.onClick.AddListener(OnClickBtn);
         _select = transform.Find("Select").gameObject;
+        _image = transform.Find("Image").GetComponent<Image>();
     }
 
     public void OnClickBtn()
@@ -56,6 +58,11 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         _select.SetActive(false);
         transform.position -= Vector3.up*5;
+    }
+
+    public void SetUI()
+    {
+        _image.sprite = TileSO.TileSprite;
     }
 }
 

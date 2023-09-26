@@ -17,6 +17,7 @@ public class Hands : MonoBehaviour
 
     [SerializeField]
     public Button restartBtn;
+    public Button restartBtn2;
 
     public UnityEvent<List<TileSO>> uEvent = null;
     public GameObject tenpai;
@@ -24,6 +25,7 @@ public class Hands : MonoBehaviour
     {
         GameStart();
         restartBtn.onClick.AddListener(Restart);
+        restartBtn2.onClick.AddListener(Restart);
     }
 
     private void Restart()

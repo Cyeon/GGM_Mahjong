@@ -23,7 +23,7 @@ public class TenpaiChecker : MonoBehaviour
     private TileListSO _13TileListSO = null;
 
     private static List<TileSO> _tenpaiNeed = new List<TileSO>();
-
+    public List<TileSO> TenpaiNeed => _tenpaiNeed;
 
     private List<TileSO> _13Tiles = new List<TileSO>();
 
@@ -125,7 +125,7 @@ public class TenpaiChecker : MonoBehaviour
                 {
                     foreach (TileSO item in dict.Keys)
                     {
-                        if (IsSameTile(item, list[i]))
+                        if (GameManager.Instance.IsSameTile(item, list[i]))
                         {
                             dict[item]++;
                             isAdd = true;
@@ -269,12 +269,7 @@ public class TenpaiChecker : MonoBehaviour
         readings.Add(read);
     }
 
-    private static bool IsSameTile(TileSO tileOne, TileSO tileTwo)
-    {
-        if (tileOne.TileType == tileTwo.TileType && tileOne.TileNumber == tileTwo.TileNumber)
-            return true;
-        return false;
-    }
+
 
     private static List<HandReading> HandReadingRecursion(List<TileSO> remaining_tiles, List<TileMeld> melds, bool tenpai_only, bool early_return)
     {
@@ -301,7 +296,7 @@ public class TenpaiChecker : MonoBehaviour
         }
         else if (hand.Count == 2) // 이건 패 14개인 경우에 머리 완성시키는 용도
         {
-            if (IsSameTile(hand[0], hand[1])) // 만약 타입이 같으면 
+            if (GameManager.Instance.IsSameTile(hand[0], hand[1])) // 만약 타입이 같으면 
             {
                 TilePair pair = new TilePair(hand[0], hand[1]);
 
@@ -316,7 +311,7 @@ public class TenpaiChecker : MonoBehaviour
         // 핸드 사이즈대로 돌아감 
         for (int i = 0; i < hand.Count; i++)
         {
-            if (i != 0 && IsSameTile(hand[i], hand[i - 1])) // 이전 타일과 같은 타일이면 컨티뉴 
+            if (i != 0 && GameManager.Instance.IsSameTile(hand[i], hand[i - 1])) // 이전 타일과 같은 타일이면 컨티뉴 
                 continue;
 
             TileSO tile = hand[i];
@@ -329,7 +324,7 @@ public class TenpaiChecker : MonoBehaviour
             // ex. (2, 2, 2) 같은 경우
             foreach (TileSO t in hand)
             {
-                if (meld.Count < 3 && IsSameTile(t, tile))
+                if (meld.Count < 3 && GameManager.Instance.IsSameTile(t, tile))
                     meld.Add(t);
                 else
                     copy.Add(t);
@@ -406,19 +401,19 @@ public class TenpaiChecker : MonoBehaviour
                 int s = hand.Count;
                 TileSO t = null;
                 TileSO n1 = null, n2 = null;
-                if (IsSameTile(hand[(i + 1) % s], hand[(i + 2) % s])) // 아무튼 1번타일 하고 2번 타일 타입 같으면 
+                if (GameManager.Instance.IsSameTile(hand[(i + 1) % s], hand[(i + 2) % s])) // 아무튼 1번타일 하고 2번 타일 타입 같으면 
                 {
                     n1 = hand[(i + 1) % s];
                     n2 = hand[(i + 2) % s];
                     t = hand[(i + 3) % s];
                 }
-                else if (IsSameTile(hand[(i + 1) % s], hand[(i + 3) % s])) // 1 3 같으면 
+                else if (GameManager.Instance.IsSameTile(hand[(i + 1) % s], hand[(i + 3) % s])) // 1 3 같으면 
                 {
                     n1 = hand[(i + 1) % s];
                     t = hand[(i + 2) % s];
                     n2 = hand[(i + 3) % s];
                 }
-                else if (IsSameTile(hand[(i + 2) % s], hand[(i + 3) % s])) // 2 3 같으면 
+                else if (GameManager.Instance.IsSameTile(hand[(i + 2) % s], hand[(i + 3) % s])) // 2 3 같으면 
                 {
                     t = hand[(i + 1) % s];
                     n1 = hand[(i + 2) % s];
@@ -430,7 +425,7 @@ public class TenpaiChecker : MonoBehaviour
 
                 if (t != null) // 머리가 찾아져서 t가 null이 아니면 
                 {
-                    if (IsSameTile(t, tile)) // We have two remaining pairs // 우린 가졌다 두 개의 남은 패를 
+                    if (GameManager.Instance.IsSameTile(t, tile)) // We have two remaining pairs // 우린 가졌다 두 개의 남은 패를 
                     { // 그니까 타일이랑 t도 같아서 머리 두 쌍이면 
                         TilePair pair = new TilePair(tile, t); // 타일이랑 t 페어로 만들고 
                         List<TileMeld> new_melds = new List<TileMeld>();
@@ -490,8 +485,7 @@ public class TenpaiChecker : MonoBehaviour
                         if (tile.IsSecondNeighbour(t)) // 만약 간짱대기면 
                         {
                             int middle = (v1 + v2) / 2; // Need a new tile in the middle // 미드 타일을 구해준다 
-                            TileSO SO = new TileSO();
-                            SO.SetData(t.TileType, middle);
+                            TileSO SO = GameManager.Instance.GetTile(t.TileType,middle);
                             new_melds.Add(new TileMeld(t1, t2, SO, isNeed: true)); // 그리고 뉴 멜드에 넣고
                                                                                    // 아 이제 알았는데 타일 ID가 -1이면 오름패 취급인듯 
                             HandReading reading = new HandReading(new_melds, pair);
@@ -503,8 +497,7 @@ public class TenpaiChecker : MonoBehaviour
                             if (!t1.IsTerminalTile()) // t1이 노두패가 아니라면 
                             { // 대충 오름패 t1 t2로 넣고
 
-                                TileSO SO = new TileSO();
-                                SO.SetData(t.TileType, v1 - 1);
+                                TileSO SO = GameManager.Instance.GetTile(t.TileType, v1 - 1);
                                 new_melds.Add(new TileMeld(t1, t2, SO, isNeed: true));
 
                                 HandReading reading = new HandReading(new_melds, pair);
@@ -520,8 +513,7 @@ public class TenpaiChecker : MonoBehaviour
                                     new_melds.Add(item);
                                 }
                                 //new_melds.Add_all(melds);
-                                TileSO SO = new TileSO();
-                                SO.SetData(t.TileType, v2 + 1);
+                                TileSO SO = GameManager.Instance.GetTile(t.TileType, v2 + 1);
                                 new_melds.Add(new TileMeld(t1, t2, SO, isNeed: true));
 
                                 HandReading reading = new HandReading(new_melds, pair);

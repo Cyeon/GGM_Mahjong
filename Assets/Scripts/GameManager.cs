@@ -36,7 +36,7 @@ public class GameManager : MonoSingleton<GameManager>
         {
             for (int j = 0; j < 4; j++)
             {
-                TileSO tileSO =  _tileList.TileList[i];
+                TileSO tileSO = _tileList.TileList[i];
                 _tiles.Add(tileSO);
             }
         }
@@ -66,7 +66,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void RemoveTile(TileSO tile, Tile tileObj)
     {
-        if(tile == null)
+        if (tile == null)
         {
             Debug.LogError("보내진 타일이 null입니다.");
         }
@@ -111,5 +111,41 @@ public class GameManager : MonoSingleton<GameManager>
     public TileSO PickUp()
     {
         return _tileQueue.Dequeue();
+    }
+
+    public TileSO GetTile(TileType type, int number)
+    {
+        for (int i = 0; i < _tileList.TileList.Count; i++)
+        {
+            if (IsSameTile(_tileList.TileList[i], type, number))
+            {
+                return _tileList.TileList[i];
+            }
+        }
+
+        for (int i = 0; i < _tileList.AkaTileList.Count; i++)
+        {
+            if (IsSameTile(_tileList.AkaTileList[i], type, number))
+            {
+                return _tileList.AkaTileList[i];
+            }
+        }
+
+
+        return null;
+    }
+
+    public bool IsSameTile(TileSO tileOne, TileSO tileTwo)
+    {
+        if (tileOne.TileType == tileTwo.TileType && tileOne.TileNumber == tileTwo.TileNumber)
+            return true;
+        return false;
+    }
+
+    public bool IsSameTile(TileSO tile, TileType tileTwoType, int tileTwoNumber)
+    {
+        if (tile.TileType == tileTwoType && tile.TileNumber == tileTwoNumber && !tile.IsAka)
+            return true;
+        return false;
     }
 }
