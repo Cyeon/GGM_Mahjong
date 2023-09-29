@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 
@@ -20,6 +21,9 @@ public class GameManager : MonoSingleton<GameManager>
 
     private int _turnCount = 1;
     public int TurnCount => _turnCount;
+
+    [SerializeField]
+    private TMP_Text _turnText = null;
 
     private void Awake()
     {
@@ -112,6 +116,7 @@ public class GameManager : MonoSingleton<GameManager>
     public TileSO PickUp()
     {
         _turnCount++;
+        _turnText.SetText(TurnCount.ToString() + "번째 차례");
         return _tileQueue.Dequeue();
     }
 
@@ -154,5 +159,6 @@ public class GameManager : MonoSingleton<GameManager>
     public void ResetTurn()
     {
         _turnCount = 1;
+        _turnText.SetText(TurnCount.ToString() + "번째 차례");
     }
 }

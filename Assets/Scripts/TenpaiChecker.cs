@@ -269,8 +269,6 @@ public class TenpaiChecker : MonoBehaviour
         readings.Add(read);
     }
 
-
-
     private static List<HandReading> HandReadingRecursion(List<TileSO> remainTileList, List<TileMeld> melds, bool tenpaiOnly, bool earlyReturn)
     {
         List<HandReading> readings = new List<HandReading>();
@@ -536,4 +534,5 @@ public class TenpaiChecker : MonoBehaviour
 
         return readings;
     }
+
 }
